@@ -10,6 +10,7 @@ import {
 import { v4 as uuid } from 'uuid';
 
 import Card from './Card';
+import Doctor from './Doctor';
 
 @Entity('recipes')
 export default class Recipe {
@@ -29,6 +30,13 @@ export default class Recipe {
   })
   @JoinColumn()
   card: Card;
+
+  @ManyToOne(type => Doctor, recipes => Recipe, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
+  doctor: Doctor;
 
   @CreateDateColumn()
   created_at: Date;
