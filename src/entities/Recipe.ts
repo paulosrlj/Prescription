@@ -3,6 +3,8 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
@@ -11,6 +13,7 @@ import { v4 as uuid } from 'uuid';
 
 import Card from './Card';
 import Doctor from './Doctor';
+import Medicine from './Medicine';
 
 @Entity('recipes')
 export default class Recipe {
@@ -43,4 +46,9 @@ export default class Recipe {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  // Relacionamento many to many
+  @ManyToMany(type => Medicine)
+  @JoinTable()
+  medicines: Medicine;
 }
