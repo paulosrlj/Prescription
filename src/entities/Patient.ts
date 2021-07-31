@@ -2,7 +2,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   OneToOne,
   PrimaryColumn,
   UpdateDateColumn,
@@ -39,7 +38,6 @@ export default class Patient {
   birthDate: Date;
 
   @OneToOne(type => Card, patient => Patient)
-  @JoinColumn()
   card: Card;
 
   @CreateDateColumn()

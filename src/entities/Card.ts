@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToOne,
   PrimaryColumn,
   UpdateDateColumn,
@@ -22,7 +23,11 @@ export default class Card {
   @Column()
   quantidade_receitas: number;
 
-  @OneToOne(type => Patient, card => Card)
+  @OneToOne(type => Patient, card => Card, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
   patient: Patient;
 
   @CreateDateColumn()
