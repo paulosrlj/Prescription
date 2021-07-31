@@ -3,18 +3,16 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  OneToMany,
-  OneToOne,
+  ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
 import { v4 as uuid } from 'uuid';
-import Patient from './Patient';
-import Recipe from './Recipe';
 
-@Entity('cards')
-export default class Card {
+import Card from './Card';
+
+@Entity('recipes')
+export default class Recipe {
   constructor() {
     if (!this.id) this.id = uuid();
   }
@@ -23,17 +21,14 @@ export default class Card {
   readonly id: string;
 
   @Column()
-  quantidade_receitas: number;
+  validade: Date;
 
-  @OneToOne(type => Patient, card => Card, {
+  @ManyToOne(type => Card, recipes => Recipe, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
   @JoinColumn()
-  patient: Patient;
-
-  @OneToMany(type => Recipe, card => Card)
-  recipes: Recipe[];
+  card: Card;
 
   @CreateDateColumn()
   created_at: Date;

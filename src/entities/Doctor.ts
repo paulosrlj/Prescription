@@ -8,7 +8,7 @@ import {
 import { v4 as uuid } from 'uuid';
 
 @Entity('doctors')
-export default class Patient {
+export default class Doctor {
   constructor() {
     if (!this.id) this.id = uuid();
   }
