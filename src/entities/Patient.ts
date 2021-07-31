@@ -2,11 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
 import { v4 as uuid } from 'uuid';
+
+import Card from './Card';
 
 @Entity('patients')
 export default class Patient {
@@ -34,6 +37,10 @@ export default class Patient {
 
   @Column()
   birthDate: Date;
+
+  @OneToOne(type => Card, patient => Patient)
+  @JoinColumn()
+  card: Card;
 
   @CreateDateColumn()
   created_at: Date;
