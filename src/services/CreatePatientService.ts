@@ -5,7 +5,7 @@ import PatientRepository from '../repositories/PatientRepository';
 import Patient from '../entities/Patient';
 import IPatientRequest from '../dto/IPatientRequest';
 
-class PatientService {
+class CreatePatientService {
   async execute({
     cpf,
     name,
@@ -31,4 +31,4 @@ class PatientService {
   }
 }
 
-export default PatientService;
+export default CreatePatientService;

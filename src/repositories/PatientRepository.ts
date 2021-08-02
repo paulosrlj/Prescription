@@ -26,6 +26,12 @@ class PatientRepository extends Repository<Patient> {
 
     return patient;
   }
+
+  async findAll(): Promise<Patient[]> {
+    return this.find({
+      select: ['id', 'name', 'email', 'cpf', 'birthDate', 'phone'],
+    });
+  }
 }
 
 export default PatientRepository;

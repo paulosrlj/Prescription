@@ -1,9 +1,11 @@
 import { Router } from 'express';
 
-import PatientController from './controllers/PatientController';
+import ListPatientController from './controllers/ListPatientController';
+import CreatePatientController from './controllers/CreatePatientController';
 
 const router = Router();
 
-router.post('/patients', PatientController.handle);
+router.get('/patients', ListPatientController.handle);
+router.post('/patients', CreatePatientController.handle);
 
 export default router;

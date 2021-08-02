@@ -1,15 +1,16 @@
 import { Request, Response } from 'express';
 
 import IPatient from '../dto/IPatientRequest';
-import PatientService from '../services/PatientService';
+import CreatePatientService from '../services/CreatePatientService';
 
 class PatientController {
   async handle(req: Request, res: Response) {
     const { name, email, password, birthDate, phone, cpf } =
       req.body as unknown as IPatient;
 
-    const patientService = new PatientService();
-    const patient = await patientService.execute({
+    const createPatientService = new CreatePatientService();
+
+    const patient = await createPatientService.execute({
       name,
       email,
       password,
