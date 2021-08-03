@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import ListPatientService from '../services/ListPatientService';
+import ListPatientService from '../../services/patient/ListPatientService';
 
 class ListPatientController {
   async handle(req: Request, res: Response) {

@@ -3,7 +3,8 @@ import express, { Express } from 'express';
 
 import './database';
 
-import routes from './routes';
+// routes
+import patientRoutes from './routes/patientRoutes/patient.routes';
 
 class App {
   app: Express;
@@ -20,7 +21,7 @@ class App {
   }
 
   routes() {
-    this.app.use(routes);
+    this.app.use('/patients', patientRoutes);
   }
 }
 

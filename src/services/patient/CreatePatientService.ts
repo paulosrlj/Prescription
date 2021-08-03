@@ -1,9 +1,9 @@
 import { getCustomRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 
-import PatientRepository from '../repositories/PatientRepository';
-import Patient from '../entities/Patient';
-import IPatientRequest from '../dto/IPatientRequest';
+import PatientRepository from '../../repositories/PatientRepository';
+import Patient from '../../entities/Patient';
+import IPatientRequest from '../../dto/IPatientRequest';
 
 class CreatePatientService {
   async execute({

@@ -1,7 +1,7 @@
 import { getCustomRepository } from 'typeorm';
 
-import PatientRepository from '../repositories/PatientRepository';
-import Patient from '../entities/Patient';
+import PatientRepository from '../../repositories/PatientRepository';
+import Patient from '../../entities/Patient';
 
 class ListPatientService {
   async execute(): Promise<Patient[]> {

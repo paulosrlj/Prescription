@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
-import IPatient from '../dto/IPatientRequest';
-import CreatePatientService from '../services/CreatePatientService';
+import IPatient from '../../dto/IPatientRequest';
+import CreatePatientService from '../../services/patient/CreatePatientService';
 
 class PatientController {
   async handle(req: Request, res: Response) {
