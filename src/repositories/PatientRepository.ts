@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Repository, DeleteResult } from 'typeorm';
 import Patient from '../entities/Patient';
 
 import IPatient from '../dto/IPatientRequest';
