@@ -25,11 +25,7 @@ export default class Card {
   @Column()
   quantidade_receitas: number;
 
-  @OneToOne(type => Patient, card => Card, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn()
+  @OneToOne(() => Patient, patient => patient.cpf)
   patient: Patient;
 
   @OneToMany(type => Recipe, card => Card)
