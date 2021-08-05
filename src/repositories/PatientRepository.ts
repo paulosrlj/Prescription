@@ -40,6 +40,16 @@ class PatientRepository extends Repository<Patient> {
       relations: ['card'],
     });
   }
+
+  async findByCpf(cpf: string): Promise<Patient | undefined> {
+    const patient = await this.findOne({ cpf });
+    return patient;
+  }
+
+  async findByEmail(email: string): Promise<Patient | undefined> {
+    const patient = await this.findOne({ email });
+    return patient;
+  }
 }
 
 export default PatientRepository;
