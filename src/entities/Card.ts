@@ -3,7 +3,6 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  OneToMany,
   OneToOne,
   PrimaryColumn,
   UpdateDateColumn,
@@ -11,7 +10,6 @@ import {
 
 import { v4 as uuid } from 'uuid';
 import Patient from './Patient';
-import Recipe from './Recipe';
 
 @Entity('cards')
 export default class Card {
@@ -25,11 +23,16 @@ export default class Card {
   @Column()
   quantidade_receitas: number;
 
-  @OneToOne(() => Patient, patient => patient.cpf)
+  @Column()
+  patient_id: string;
+
+  @JoinColumn({ name: 'patient' })
+  @OneToOne(() => Patient)
   patient: Patient;
 
-  @OneToMany(type => Recipe, card => Card)
-  recipes: Recipe[];
+  // @OneToMany(type => Recipe, card => Card)
+  // recipes: Recipe[];
+  // Acho que esse relacionamento deveria estar so nas receitas
 
   @CreateDateColumn()
   created_at: Date;
