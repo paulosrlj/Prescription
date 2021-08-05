@@ -1,4 +1,5 @@
-import { EntityRepository, Repository, DeleteResult } from 'typeorm';
+import { EntityRepository, Repository } from 'typeorm';
+import { validate, ValidationError } from 'class-validator';
 import Patient from '../entities/Patient';
 
 import IPatient from '../dto/IPatientRequest';
@@ -12,7 +13,7 @@ class PatientRepository extends Repository<Patient> {
     password,
     phone,
     birthDate,
-  }: IPatient): Promise<Patient> {
+  }: IPatient): Promise<Patient | ValidationError[]> {
     const patient = this.create({
       cpf,
       email,
@@ -21,6 +22,12 @@ class PatientRepository extends Repository<Patient> {
       phone,
       birthDate,
     });
+
+    const errors = await validate(patient);
+
+    console.log(errors);
+
+    if (errors.length > 0) return errors;
 
     await this.save(patient);
 

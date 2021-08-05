@@ -9,6 +9,14 @@ import {
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
+import {
+  IsDate,
+  IsEmail,
+  IsPhoneNumber,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
+
 import Card from './Card';
 
 @Entity('patients')
@@ -24,18 +32,23 @@ export default class Patient {
   cpf: string;
 
   @Column()
+  @IsEmail()
   email: string;
 
   @Column()
+  @MinLength(1)
+  @MaxLength(150)
   name: string;
 
   @Column()
   password: string;
 
   @Column()
+  @IsPhoneNumber('BR')
   phone: string;
 
   @Column()
+  @IsDate()
   birthDate: Date;
 
   @OneToOne(() => Card, card => card.id, {

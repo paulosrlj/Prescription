@@ -1,3 +1,4 @@
+import { ValidationError } from 'class-validator';
 import { Request, Response } from 'express';
 
 import IPatient from '../../dto/IPatientRequest';
@@ -19,7 +20,7 @@ class PatientController {
       cpf,
     });
 
-    return res.json(patient);
+    return res.status(200).json(patient);
   }
 }
 
