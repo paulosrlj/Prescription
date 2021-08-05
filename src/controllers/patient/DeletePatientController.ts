@@ -2,8 +2,16 @@ import { Request, Response } from 'express';
 
 import DeletePatientService from '../../services/patient/DeletePatientService';
 
-class PatientController {
-  // async handle(req: Request, res: Response) {}
+class DeletePatientController {
+  async handle(req: Request, res: Response) {
+    const { cpf } = req.params;
+
+    const deletePatientService = new DeletePatientService();
+
+    const patient = await deletePatientService.execute(cpf);
+
+    return res.status(200).json({ message: 'Patient removed' });
+  }
 }
 
-export default new PatientController();
+export default new DeletePatientController();
