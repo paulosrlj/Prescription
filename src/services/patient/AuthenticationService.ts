@@ -5,7 +5,7 @@ import { sign } from 'jsonwebtoken';
 import PatientRepository from '../../repositories/PatientRepository';
 
 import IPatientAuthenticationRequest from '../../dto/IPatientAuthenticationRequest';
-import AplicationErrors from '../../errors/AplicationErrors';
+import ApplicationErrors from '../../errors/ApplicationErrors';
 
 class AuthenticationService {
   async execute({
@@ -16,12 +16,12 @@ class AuthenticationService {
 
     const patient = await patientRepository.findByCpf(cpf);
     if (!patient) {
-      throw new AplicationErrors('E-mail or password invalid', 400);
+      throw new ApplicationErrors('E-mail or password invalid', 400);
     }
 
     const passwordCompared = await compare(password, patient.password);
     if (!passwordCompared) {
-      throw new AplicationErrors('E-mail or password invalid', 400);
+      throw new ApplicationErrors('E-mail or password invalid', 400);
     }
 
     const tokenKey = process.env.TOKEN_KEY || '';

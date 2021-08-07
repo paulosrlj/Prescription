@@ -3,14 +3,12 @@ import {
   EntityRepository,
   getCustomRepository,
   Repository,
-  UpdateResult,
 } from 'typeorm';
-import { validate, ValidationError } from 'class-validator';
 import Patient from '../entities/Patient';
 
 import IPatient from '../dto/IPatientRequest';
 import CardRepository from './CardRepository';
-import AplicationErrors from '../errors/AplicationErrors';
+import ApplicationErrors from '../errors/ApplicationErrors';
 
 @EntityRepository(Patient)
 class PatientRepository extends Repository<Patient> {
@@ -21,12 +19,16 @@ class PatientRepository extends Repository<Patient> {
     password,
     phone,
     birthDate,
-  }: IPatient): Promise<Patient | null> {
-    if (!cpf) return null;
+  }: IPatient): Promise<Patient> {
+    if (!cpf || !email) throw new ApplicationErrors('Cpf not provided', 400);
 
-    const patientExists = await this.findByCpf(cpf);
+    const patientCpfExists = await this.findByCpf(cpf);
+    if (patientCpfExists)
+      throw new ApplicationErrors('Patient already exists', 401);
 
-    if (patientExists) return null;
+    const patientEmailExists = await this.findByEmail(email);
+    if (patientEmailExists)
+      throw new ApplicationErrors('Email already exists', 401);
 
     const patient = this.create({
       cpf,
@@ -42,12 +44,6 @@ class PatientRepository extends Repository<Patient> {
 
     patient.card = card;
 
-    // const errors = await validate(patient);
-
-    // console.log(errors);
-
-    // if (errors.length > 0) throw new AplicationErrors(errors, 401);
-
     await this.save(patient);
 
     return patient;
@@ -60,22 +56,20 @@ class PatientRepository extends Repository<Patient> {
     });
   }
 
-  async findByCpf(cpf: string): Promise<Patient | null> {
+  async findByCpf(cpf: string): Promise<Patient | undefined> {
     const patient = await this.findOne({ cpf });
-    if (!patient) return null;
-
     return patient;
   }
 
-  async findByEmail(email: string): Promise<Patient | null> {
+  async findByEmail(email: string): Promise<Patient | undefined> {
     const patient = await this.findOne({ email });
-    if (!patient) return null;
 
     return patient;
   }
 
-  async updateByCpf(patientsCriteria: IPatient): Promise<Patient | null> {
-    if (!patientsCriteria.cpf) return null;
+  async updateByCpf(patientsCriteria: IPatient): Promise<Patient> {
+    if (!patientsCriteria.cpf)
+      throw new ApplicationErrors('CPF not provided!', 400);
 
     const { cpf } = patientsCriteria;
     const attributes = { ...patientsCriteria };
@@ -83,7 +77,7 @@ class PatientRepository extends Repository<Patient> {
 
     const patient = await this.findByCpf(cpf);
 
-    if (!patient) return null;
+    if (!patient) throw new ApplicationErrors('Patient does not exists', 401);
 
     await this.update({ cpf }, attributes);
 
@@ -91,6 +85,9 @@ class PatientRepository extends Repository<Patient> {
   }
 
   async deleteByCpf(cpf: string): Promise<DeleteResult> {
+    const patient = await this.findByCpf(cpf);
+    if (!patient) throw new ApplicationErrors('Patient does not exists', 401);
+
     return this.delete({ cpf });
   }
 }

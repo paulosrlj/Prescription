@@ -1,4 +1,4 @@
-class AplicationErrors {
+class ApplicationErrors {
   public readonly message: string;
 
   public readonly statusCode: number;
@@ -9,4 +9,4 @@ class AplicationErrors {
   }
 }
 
-export default AplicationErrors;
+export default ApplicationErrors;

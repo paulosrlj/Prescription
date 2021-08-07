@@ -1,7 +1,10 @@
 import 'reflect-metadata';
+import 'express-async-errors';
 import express, { Express } from 'express';
 
 import './database';
+
+import { exceptionsHandle } from './middlewares/handleExpeption';
 
 // routes
 import patientRoutes from './routes/patient.routes';
@@ -17,6 +20,8 @@ class App {
     this.app = express();
     this.middlewares();
     this.routes();
+
+    this.app.use(exceptionsHandle);
   }
 
   middlewares() {

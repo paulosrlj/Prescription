@@ -1,7 +1,5 @@
-import { IsInstance, isInstance, ValidationError } from 'class-validator';
 import { Request, Response } from 'express';
 
-import IPatient from '../../dto/IPatientRequest';
 import UpdatePatientService from '../../services/patient/UpdatePatientService';
 
 class PatientController {

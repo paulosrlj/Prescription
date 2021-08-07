@@ -5,7 +5,7 @@ import { sign } from 'jsonwebtoken';
 import DoctorRepository from '../../repositories/DoctorRepository';
 
 import IDoctorAuthenticationRequest from '../../dto/IDoctorAuthenticationRequest';
-import AplicationErrors from '../../errors/AplicationErrors';
+import ApplicationErrors from '../../errors/ApplicationErrors';
 
 class AuthenticationService {
   async execute({
@@ -16,12 +16,12 @@ class AuthenticationService {
 
     const doctor = await doctorRepository.findByCrm(crm);
     if (!doctor) {
-      throw new AplicationErrors('E-mail or password invalid', 400);
+      throw new ApplicationErrors('E-mail or password invalid', 400);
     }
 
     const passwordCompared = await compare(password, doctor.password);
     if (!passwordCompared) {
-      throw new AplicationErrors('E-mail or password invalid', 400);
+      throw new ApplicationErrors('E-mail or password invalid', 400);
     }
 
     const tokenKey = process.env.TOKEN_KEY || '';
