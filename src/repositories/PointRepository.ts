@@ -5,10 +5,7 @@ import IPoint from '../dto/IPointRequest';
 
 @EntityRepository(Point)
 class PointRepository extends Repository<Point> {
-  async createPoint({
-    lat,
-    lng,
-  }: IPoint): Promise<Point> {
+  async createPoint({ lat, lng }: IPoint): Promise<Point> {
     const point = this.create({
       lat,
       lng,

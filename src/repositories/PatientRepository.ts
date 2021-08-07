@@ -3,12 +3,14 @@ import {
   EntityRepository,
   getCustomRepository,
   Repository,
+  UpdateResult,
 } from 'typeorm';
 import { validate, ValidationError } from 'class-validator';
 import Patient from '../entities/Patient';
 
 import IPatient from '../dto/IPatientRequest';
 import CardRepository from './CardRepository';
+import AplicationErrors from '../errors/AplicationErrors';
 
 @EntityRepository(Patient)
 class PatientRepository extends Repository<Patient> {
@@ -20,6 +22,8 @@ class PatientRepository extends Repository<Patient> {
     phone,
     birthDate,
   }: IPatient): Promise<Patient | null> {
+    if (!cpf) return null;
+
     const patientExists = await this.findByCpf(cpf);
 
     if (patientExists) return null;
@@ -42,7 +46,7 @@ class PatientRepository extends Repository<Patient> {
 
     // console.log(errors);
 
-    // if (errors.length > 0) return errors;
+    // if (errors.length > 0) throw new AplicationErrors(errors, 401);
 
     await this.save(patient);
 
@@ -66,6 +70,22 @@ class PatientRepository extends Repository<Patient> {
   async findByEmail(email: string): Promise<Patient | null> {
     const patient = await this.findOne({ email });
     if (!patient) return null;
+
+    return patient;
+  }
+
+  async updateByCpf(patientsCriteria: IPatient): Promise<Patient | null> {
+    if (!patientsCriteria.cpf) return null;
+
+    const { cpf } = patientsCriteria;
+    const attributes = { ...patientsCriteria };
+    delete attributes.cpf;
+
+    const patient = await this.findByCpf(cpf);
+
+    if (!patient) return null;
+
+    await this.update({ cpf }, attributes);
 
     return patient;
   }
