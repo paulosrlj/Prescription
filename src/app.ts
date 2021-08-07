@@ -7,6 +7,7 @@ import './database';
 import patientRoutes from './routes/patient.routes';
 import doctorRoutes from './routes/doctor.routes';
 // import cardRoutes from './routes/cardRoutes/card.routes';
+import pointRoutes from './routes/point.routes';
 
 class App {
   app: Express;
@@ -26,6 +27,7 @@ class App {
     this.app.use('/patients', patientRoutes);
     this.app.use('/doctors', doctorRoutes);
     // this.app.use('/cards', cardRoutes);
+    this.app.use('/drugstore', pointRoutes);
   }
 }
 
