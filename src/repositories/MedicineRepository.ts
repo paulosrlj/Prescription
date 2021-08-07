@@ -1,47 +1,50 @@
-import { EntityRepository, Repository } from 'typeorm';
-import Doctor from '../entities/Doctor';
+import { DeleteResult, EntityRepository, Repository } from 'typeorm';
+import Medicine from '../entities/Medicine';
 
-import IDoctor from '../dto/IDoctorRequest';
+import IMedicine from '../dto/IMedicineRequest';
 
-@EntityRepository(Doctor)
-class DoctorRepository extends Repository<Doctor> {
-  async createDoctor({
-    crm,
-    name,
-    email,
-    password,
-    phone,
-    birthDate,
-  }: IDoctor): Promise<Doctor> {
-    const doctor = this.create({
-      crm,
-      email,
-      name,
-      password,
-      phone,
-      birthDate,
+@EntityRepository(Medicine)
+class MedicineRepository extends Repository<Medicine> {
+  async createMedicine({
+    idRegister,
+    nome,
+    categoria,
+    classe_terapeutica,
+    empresa_detentora,
+  }: IMedicine): Promise<Medicine> {
+    const medicine = this.create({
+      idRegister,
+      nome,
+      categoria,
+      classe_terapeutica,
+      empresa_detentora,
     });
 
-    await this.save(doctor);
+    await this.save(medicine);
 
-    return doctor;
+    return medicine;
   }
 
-  async findAll(): Promise<Doctor[]> {
+  async findAll(): Promise<Medicine[]> {
     return this.find({
-      select: ['id', 'name', 'email', 'crm', 'birthDate', 'phone'],
+      select: ['nome', 'categoria', 'classe_terapeutica', 'empresa_detentora'],
     });
   }
 
-  async findByCrm(crm: string): Promise<Doctor | undefined> {
-    const doctor = await this.findOne({ crm });
-    return doctor;
+  async findByNome(nome: string): Promise<Medicine | undefined> {
+    const medicine = await this.findOne({ nome });
+    return medicine;
   }
 
-  async findByEmail(email: string): Promise<Doctor | undefined> {
-    const doctor = await this.findOne({ email });
-    return doctor;
+  async findById(id: string): Promise<Medicine | undefined> {
+    const medicine = await this.findOne({ id });
+    return medicine;
+  }
+
+  async deleteById(idRegister: string): Promise<DeleteResult> {
+    const medicine = await this.delete({ idRegister });
+    return medicine;
   }
 }
 
-export default DoctorRepository;
+export default MedicineRepository;

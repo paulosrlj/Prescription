@@ -1,16 +1,16 @@
 import { DeleteResult, getCustomRepository } from 'typeorm';
 
-import PatientRepository from '../../repositories/PatientRepository';
-import Patient from '../../entities/Patient';
+import MedicineRepository from '../../repositories/MedicineRepository';
+import Medicine from '../../entities/Medicine';
 
-class DeletePatientService {
-  async execute(cpf: string): Promise<DeleteResult> {
-    const patientRepository = getCustomRepository(PatientRepository);
+class DeleteMedicineService {
+  async execute(idRegister: string): Promise<DeleteResult> {
+    const medicineRepository = getCustomRepository(MedicineRepository);
 
-    const patient = await patientRepository.delete({ cpf });
+    const medicine = await medicineRepository.delete({ idRegister });
 
-    return patient;
+    return medicine;
   }
 }
 
-export default DeletePatientService;
+export default DeleteMedicineService;

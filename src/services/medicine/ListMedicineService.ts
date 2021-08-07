@@ -1,16 +1,16 @@
 import { getCustomRepository } from 'typeorm';
 
-import PatientRepository from '../../repositories/PatientRepository';
-import Patient from '../../entities/Patient';
+import MedicineRepository from '../../repositories/MedicineRepository';
+import Medicine from '../../entities/Medicine';
 
-class ListPatientService {
-  async execute(): Promise<Patient[]> {
-    const patientRepository = getCustomRepository(PatientRepository);
+class ListMedicineService {
+  async execute(): Promise<Medicine[]> {
+    const medicineRepository = getCustomRepository(MedicineRepository);
 
-    const patients = await patientRepository.findAll();
+    const medicines = await medicineRepository.findAll();
 
-    return patients;
+    return medicines;
   }
 }
 
-export default ListPatientService;
+export default ListMedicineService;
