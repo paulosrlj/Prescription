@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class InsertaPatientAndCardSeeds1628032434495
+export class InsertPatientAndCardSeeds1628295760009
   implements MigrationInterface
 {
   public async up(queryRunner: QueryRunner): Promise<void> {

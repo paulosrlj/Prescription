@@ -1,5 +1,4 @@
 import { getCustomRepository } from 'typeorm';
-import { hash } from 'bcryptjs';
 import { ValidationError } from 'class-validator';
 
 import PatientRepository from '../../repositories/PatientRepository';
@@ -14,16 +13,13 @@ class CreatePatientService {
     password,
     phone,
     birthDate,
-  }: IPatientRequest): Promise<Patient | ValidationError[]> {
+  }: IPatientRequest): Promise<Patient | null> {
     const patientRepository = getCustomRepository(PatientRepository);
-
-    const encryptedPassword = await hash(password, 8);
-
     const patient = await patientRepository.createPatient({
       cpf,
       name,
       email,
-      password: encryptedPassword,
+      password,
       phone,
       birthDate,
     });

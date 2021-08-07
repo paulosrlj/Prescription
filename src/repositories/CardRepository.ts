@@ -1,13 +1,11 @@
 import { EntityRepository, Repository } from 'typeorm';
 
 import Card from '../entities/Card';
-import ICard from '../dto/ICardRequest';
 
 @EntityRepository(Card)
 class CardRepository extends Repository<Card> {
-  async createCard({ patient_id }: ICard): Promise<Card> {
-    const card = this.create({ patient_id });
-
+  async createCard(): Promise<Card> {
+    const card = this.create();
     await this.save(card);
 
     return card;
@@ -25,10 +23,10 @@ class CardRepository extends Repository<Card> {
     return card;
   }
 
-  async findByPatientId(patient_id: string): Promise<Card | undefined> {
-    const card = await this.findOne({ patient_id });
-    return card;
-  }
+  // async findByPatientId(patient_id: string): Promise<Card | undefined> {
+  //   const card = await this.findOne({ patient_id });
+  //   return card;
+  // }
 }
 
 export default CardRepository;
