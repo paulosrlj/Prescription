@@ -12,7 +12,7 @@ export function verifyAuthenticationToken(
   request: Request,
   response: Response,
   next: NextFunction,
-) {
+): void | Response<any, Record<string, any>> {
   const token = request.headers.authorization;
 
   if (!token) {

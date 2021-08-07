@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateRelationPropertys1627775681870
+export class CreateRelationPropertys1628295728176
   implements MigrationInterface
 {
   public async up(queryRunner: QueryRunner): Promise<void> {

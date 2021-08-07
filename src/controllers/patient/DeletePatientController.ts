@@ -8,7 +8,7 @@ class DeletePatientController {
 
     const deletePatientService = new DeletePatientService();
 
-    const patient = await deletePatientService.execute(cpf);
+    await deletePatientService.execute(cpf);
 
     return res.status(200).json({ message: 'Patient removed' });
   }
