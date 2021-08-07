@@ -20,16 +20,16 @@ export default class Medicine {
   @PrimaryColumn()
   readonly idRegister: string;
 
-  @PrimaryColumn()
+  @Column({ nullable: false })
   nome: string;
 
-  @Column()
+  @Column({ nullable: false })
   categoria: string;
 
-  @Column()
+  @Column({ nullable: false })
   classe_terapeutica: string;
 
-  @Column()
+  @Column({ nullable: false })
   empresa_detentora: string;
 
   @CreateDateColumn()

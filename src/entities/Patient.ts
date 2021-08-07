@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -9,6 +10,15 @@ import {
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
+import {
+  IsDate,
+  IsEmail,
+  IsPhoneNumber,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
+
+import { hash } from 'bcryptjs';
 import Card from './Card';
 
 @Entity('patients')
@@ -17,25 +27,35 @@ export default class Patient {
     if (!this.id) this.id = uuid();
   }
 
+  @BeforeInsert()
+  async hashPassord(): Promise<void> {
+    this.password = await hash(this.password, 8);
+  }
+
   @Column()
   readonly id: string;
 
   @PrimaryColumn()
   cpf: string;
 
-  @Column()
+  @Column({ unique: true, nullable: false })
+  @IsEmail()
   email: string;
 
-  @Column()
+  @Column({ nullable: false })
+  @MinLength(1)
+  @MaxLength(150)
   name: string;
 
-  @Column()
+  @Column({ nullable: false })
   password: string;
 
-  @Column()
+  @Column({ nullable: false })
+  @IsPhoneNumber('BR')
   phone: string;
 
-  @Column()
+  @Column({ nullable: false, type: 'date' })
+  @IsDate()
   birthDate: Date;
 
   @OneToOne(() => Card, card => card.id, {

@@ -1,7 +1,14 @@
-import { EntityRepository, Repository, DeleteResult } from 'typeorm';
+import {
+  DeleteResult,
+  EntityRepository,
+  getCustomRepository,
+  Repository,
+} from 'typeorm';
+import { validate, ValidationError } from 'class-validator';
 import Patient from '../entities/Patient';
 
 import IPatient from '../dto/IPatientRequest';
+import CardRepository from './CardRepository';
 
 @EntityRepository(Patient)
 class PatientRepository extends Repository<Patient> {
@@ -12,7 +19,11 @@ class PatientRepository extends Repository<Patient> {
     password,
     phone,
     birthDate,
-  }: IPatient): Promise<Patient> {
+  }: IPatient): Promise<Patient | null> {
+    const patientExists = await this.findByCpf(cpf);
+
+    if (patientExists) return null;
+
     const patient = this.create({
       cpf,
       email,
@@ -21,6 +32,17 @@ class PatientRepository extends Repository<Patient> {
       phone,
       birthDate,
     });
+
+    const cardRepository = getCustomRepository(CardRepository);
+    const card = await cardRepository.createCard();
+
+    patient.card = card;
+
+    // const errors = await validate(patient);
+
+    // console.log(errors);
+
+    // if (errors.length > 0) return errors;
 
     await this.save(patient);
 
@@ -34,14 +56,22 @@ class PatientRepository extends Repository<Patient> {
     });
   }
 
-  async findByCpf(cpf: string): Promise<Patient | undefined> {
+  async findByCpf(cpf: string): Promise<Patient | null> {
     const patient = await this.findOne({ cpf });
+    if (!patient) return null;
+
     return patient;
   }
 
-  async findByEmail(email: string): Promise<Patient | undefined> {
+  async findByEmail(email: string): Promise<Patient | null> {
     const patient = await this.findOne({ email });
+    if (!patient) return null;
+
     return patient;
+  }
+
+  async deleteByCpf(cpf: string): Promise<DeleteResult> {
+    return this.delete({ cpf });
   }
 }
 

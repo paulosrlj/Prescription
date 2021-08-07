@@ -21,19 +21,19 @@ export default class Doctor {
   @PrimaryColumn()
   crm: string;
 
-  @Column()
+  @Column({ nullable: false })
   email: string;
 
-  @Column()
+  @Column({ nullable: false })
   name: string;
 
-  @Column()
+  @Column({ nullable: false })
   password: string;
 
-  @Column()
+  @Column({ nullable: false })
   phone: string;
 
-  @Column()
+  @Column({ nullable: false, type: 'date' })
   birthDate: Date;
 
   @OneToMany(type => Recipe, doctor => Doctor)

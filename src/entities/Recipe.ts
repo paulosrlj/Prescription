@@ -24,7 +24,7 @@ export default class Recipe {
   @PrimaryColumn()
   readonly id: string;
 
-  @Column()
+  @Column({ nullable: false, type: 'date' })
   validade: Date;
 
   @ManyToOne(type => Card, recipes => Recipe, {
