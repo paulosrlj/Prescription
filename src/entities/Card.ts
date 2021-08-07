@@ -23,11 +23,7 @@ export default class Card {
   @Column()
   quantidade_receitas: number;
 
-  @Column()
-  patient_id: string;
-
-  @JoinColumn({ name: 'patient' })
-  @OneToOne(() => Patient)
+  @OneToOne(() => Patient, patient => patient.cpf)
   patient: Patient;
 
   // @OneToMany(type => Recipe, card => Card)

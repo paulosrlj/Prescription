@@ -1,34 +1,29 @@
 import { getCustomRepository } from 'typeorm';
-import { hash } from 'bcryptjs';
 
-import PatientRepository from '../../repositories/PatientRepository';
-import Patient from '../../entities/Patient';
-import IPatientRequest from '../../dto/IPatientRequest';
+import MedicineRepository from '../../repositories/MedicineRepository';
+import Medicine from '../../entities/Medicine';
+import IMedicine from '../../dto/IMedicineRequest';
 
-class CreatePatientService {
+class CreateMedicineService {
   async execute({
-    cpf,
-    name,
-    email,
-    password,
-    phone,
-    birthDate,
-  }: IPatientRequest): Promise<Patient> {
-    const patientRepository = getCustomRepository(PatientRepository);
+    idRegister,
+    nome,
+    categoria,
+    classe_terapeutica,
+    empresa_detentora,
+  }: IMedicine): Promise<Medicine> {
+    const medicineRepository = getCustomRepository(MedicineRepository);
 
-    const encryptedPassword = await hash(password, 8);
-
-    const patient = await patientRepository.createPatient({
-      cpf,
-      name,
-      email,
-      password: encryptedPassword,
-      phone,
-      birthDate,
+    const medicine = await medicineRepository.createMedicine({
+      idRegister,
+      nome,
+      categoria,
+      classe_terapeutica,
+      empresa_detentora,
     });
 
-    return patient;
+    return medicine;
   }
 }
 
-export default CreatePatientService;
+export default CreateMedicineService;
