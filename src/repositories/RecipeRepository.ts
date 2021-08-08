@@ -1,46 +1,18 @@
 import { EntityRepository, Repository } from 'typeorm';
-import Doctor from '../entities/Doctor';
 
-import IDoctor from '../dto/IDoctorRequest';
+import IRecipe from '../dto/IRecipeRequest';
+import Recipe from '../entities/Recipe';
 
-@EntityRepository(Doctor)
-class DoctorRepository extends Repository<Doctor> {
-  async createDoctor({
-    crm,
-    name,
-    email,
-    password,
-    phone,
-    birthDate,
-  }: IDoctor): Promise<Doctor> {
-    const doctor = this.create({
-      crm,
-      email,
-      name,
-      password,
-      phone,
-      birthDate,
+@EntityRepository(Recipe)
+class DoctorRepository extends Repository<Recipe> {
+  async createRecipe({ validade }: IRecipe): Promise<Recipe> {
+    const recipe = this.create({
+      validade,
     });
 
-    await this.save(doctor);
+    await this.save(recipe);
 
-    return doctor;
-  }
-
-  async findAll(): Promise<Doctor[]> {
-    return this.find({
-      select: ['id', 'name', 'email', 'crm', 'birthDate', 'phone'],
-    });
-  }
-
-  async findByCrm(crm: string): Promise<Doctor | undefined> {
-    const doctor = await this.findOne({ crm });
-    return doctor;
-  }
-
-  async findByEmail(email: string): Promise<Doctor | undefined> {
-    const doctor = await this.findOne({ email });
-    return doctor;
+    return recipe;
   }
 }
 

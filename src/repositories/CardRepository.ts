@@ -22,11 +22,6 @@ class CardRepository extends Repository<Card> {
     const card = await this.findOne({ id });
     return card;
   }
-
-  // async findByPatientId(patient_id: string): Promise<Card | undefined> {
-  //   const card = await this.findOne({ patient_id });
-  //   return card;
-  // }
 }
 
 export default CardRepository;

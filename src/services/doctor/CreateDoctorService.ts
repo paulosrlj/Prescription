@@ -1,5 +1,4 @@
 import { getCustomRepository } from 'typeorm';
-import { hash } from 'bcryptjs';
 
 import DoctorRepository from '../../repositories/DoctorRepository';
 import Doctor from '../../entities/Doctor';
@@ -16,13 +15,11 @@ class CreateDoctorService {
   }: IDoctorRequest): Promise<Doctor> {
     const doctorRepository = getCustomRepository(DoctorRepository);
 
-    const encryptedPassword = await hash(password, 8);
-
     const doctor = await doctorRepository.createDoctor({
       crm,
       name,
       email,
-      password: encryptedPassword,
+      password,
       phone,
       birthDate,
     });
