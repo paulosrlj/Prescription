@@ -9,13 +9,10 @@ import Patient from '../../entities/Patient';
 import IPatient from '../../dto/IPatientRequest';
 import CardRepository from './CardRepository';
 import ApplicationErrors from '../../errors/ApplicationErrors';
-import { IPatientRepository } from '../PatientRepository';
+import { IPatientRepository } from '../IPatientRepository';
 
 @EntityRepository(Patient)
-class PatientRepository
-  extends Repository<Patient>
-  implements IPatientRepository
-{
+class PatientRepository extends Repository<Patient> {
   async createPatient({
     cpf,
     name,

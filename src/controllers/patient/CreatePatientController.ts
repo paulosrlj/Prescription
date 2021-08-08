@@ -1,17 +1,20 @@
-import { IsInstance, isInstance, ValidationError } from 'class-validator';
 import { Request, Response } from 'express';
 
 import IPatient from '../../dto/IPatientRequest';
 import CreatePatientService from '../../services/patient/CreatePatientService';
 
 class PatientController {
+  private createPatientService: CreatePatientService;
+
+  constructor() {
+    this.createPatientService = new CreatePatientService();
+  }
+
   async handle(req: Request, res: Response) {
     const { name, email, password, birthDate, phone, cpf } =
       req.body as unknown as IPatient;
 
-    const createPatientService = new CreatePatientService();
-
-    const patient = await createPatientService.execute({
+    const patient = await this.createPatientService.execute({
       name,
       email,
       password,
