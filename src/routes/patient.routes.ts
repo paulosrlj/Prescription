@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import ListAllPatientController from '../controllers/patient/ListAllPatientController';
 import ListPatientController from '../controllers/patient/ListPatientController';
 import CreatePatientController from '../controllers/patient/CreatePatientController';
 import DeletePatientController from '../controllers/patient/DeletePatientController';
@@ -9,10 +10,12 @@ import UpdatePatientController from '../controllers/patient/UpdatePatientControl
 
 const router = Router();
 
-router.get('/', ListPatientController.handle);
+router.get('/', ListAllPatientController.handle);
+router.get('/:cpf', ListPatientController.handle);
 router.post('/', CreatePatientController.handle);
-router.post('/login', AuthenticationController.handle);
 router.put('/', UpdatePatientController.handle);
 router.delete('/:cpf', DeletePatientController.handle);
+
+router.post('/login', AuthenticationController.handle);
 
 export default router;

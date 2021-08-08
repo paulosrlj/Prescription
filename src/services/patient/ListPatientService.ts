@@ -2,14 +2,16 @@ import { getCustomRepository } from 'typeorm';
 
 import PatientRepository from '../../repositories/PatientRepository';
 import Patient from '../../entities/Patient';
+import ApplicationErrors from '../../errors/ApplicationErrors';
 
 class ListPatientService {
-  async execute(): Promise<Patient[]> {
+  async execute(cpf: string): Promise<Patient> {
     const patientRepository = getCustomRepository(PatientRepository);
 
-    const patients = await patientRepository.findAll();
+    const patient = await patientRepository.findByCpf(cpf);
+    if (!patient) throw new ApplicationErrors('Patient does not exists', 401);
 
-    return patients;
+    return patient;
   }
 }
 
