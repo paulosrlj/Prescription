@@ -27,7 +27,14 @@ class MedicineRepository extends Repository<Medicine> {
 
   async findAll(): Promise<Medicine[]> {
     return this.find({
-      select: ['nome', 'categoria', 'classe_terapeutica', 'empresa_detentora'],
+      select: [
+        'id',
+        'idRegister',
+        'nome',
+        'categoria',
+        'classe_terapeutica',
+        'empresa_detentora',
+      ],
     });
   }
 

@@ -3,7 +3,7 @@ import { getCustomRepository } from 'typeorm';
 import MedicineRepository from '../../repositories/MedicineRepository';
 import Medicine from '../../entities/Medicine';
 
-class ListMedicineService {
+class ListAllMedicineService {
   async execute(): Promise<Medicine[]> {
     const medicineRepository = getCustomRepository(MedicineRepository);
 
@@ -13,4 +13,4 @@ class ListMedicineService {
   }
 }
 
-export default ListMedicineService;
+export default ListAllMedicineService;
