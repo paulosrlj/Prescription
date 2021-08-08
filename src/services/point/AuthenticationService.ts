@@ -2,10 +2,10 @@ import { getCustomRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
-import PatientRepository from '../../repositories/PatientRepository';
+import PatientRepository from '../../repositories/implementations/PatientRepository';
 
 import IPatientAuthenticationRequest from '../../dto/IPatientAuthenticationRequest';
-import AplicationErrors from '../../errors/AplicationErrors';
+import AplicationErrors from '../../errors/ApplicationErrors';
 
 class AuthenticationService {
   async execute({

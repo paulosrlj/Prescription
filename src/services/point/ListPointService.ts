@@ -1,6 +1,6 @@
 import { getCustomRepository } from 'typeorm';
 
-import PointRepository from '../../repositories/PointRepository';
+import PointRepository from '../../repositories/implementations/PointRepository';
 import Point from '../../entities/Point';
 
 class ListPointService {

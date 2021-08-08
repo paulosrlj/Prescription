@@ -1,6 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
 
-import Card from '../entities/Card';
+import Card from '../../entities/Card';
 
 @EntityRepository(Card)
 class CardRepository extends Repository<Card> {

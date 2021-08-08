@@ -1,8 +1,8 @@
 import { DeleteResult, EntityRepository, Repository } from 'typeorm';
-import Doctor from '../entities/Doctor';
+import Doctor from '../../entities/Doctor';
 
-import IDoctor from '../dto/IDoctorRequest';
-import ApplicationErrors from '../errors/ApplicationErrors';
+import IDoctor from '../../dto/IDoctorRequest';
+import ApplicationErrors from '../../errors/ApplicationErrors';
 
 @EntityRepository(Doctor)
 class DoctorRepository extends Repository<Doctor> {

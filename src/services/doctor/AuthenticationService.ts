@@ -2,7 +2,7 @@ import { getCustomRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
-import DoctorRepository from '../../repositories/DoctorRepository';
+import DoctorRepository from '../../repositories/implementations/DoctorRepository';
 
 import IDoctorAuthenticationRequest from '../../dto/IDoctorAuthenticationRequest';
 import ApplicationErrors from '../../errors/ApplicationErrors';

@@ -1,7 +1,7 @@
 import { DeleteResult, EntityRepository, Repository } from 'typeorm';
-import Medicine from '../entities/Medicine';
+import Medicine from '../../entities/Medicine';
 
-import IMedicine from '../dto/IMedicineRequest';
+import IMedicine from '../../dto/IMedicineRequest';
 
 @EntityRepository(Medicine)
 class MedicineRepository extends Repository<Medicine> {

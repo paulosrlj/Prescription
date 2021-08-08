@@ -1,7 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
 
-import IRecipe from '../dto/IRecipeRequest';
-import Recipe from '../entities/Recipe';
+import IRecipe from '../../dto/IRecipeRequest';
+import Recipe from '../../entities/Recipe';
 
 @EntityRepository(Recipe)
 class DoctorRepository extends Repository<Recipe> {

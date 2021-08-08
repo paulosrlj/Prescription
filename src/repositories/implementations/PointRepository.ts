@@ -1,7 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
-import Point from '../entities/Point';
+import Point from '../../entities/Point';
 
-import IPoint from '../dto/IPointRequest';
+import IPoint from '../../dto/IPointRequest';
 
 @EntityRepository(Point)
 class PointRepository extends Repository<Point> {
