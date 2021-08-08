@@ -6,15 +6,19 @@ import CreatePatientController from '../controllers/patient/CreatePatientControl
 import DeletePatientController from '../controllers/patient/DeletePatientController';
 import AuthenticationController from '../controllers/patient/AuthenticationController';
 import UpdatePatientController from '../controllers/patient/UpdatePatientController';
-// import verifyAuthenticationToken from '../../middleware/patient/verifyAuthenticationToken';
+import { verifyAuthenticationToken } from '../middlewares/patient/verifyAuthenticationToken';
 
 const router = Router();
 
-router.get('/', ListAllPatientController.handle);
-router.get('/:cpf', ListPatientController.handle);
+router.get('/', verifyAuthenticationToken, ListAllPatientController.handle);
+router.get('/:cpf', verifyAuthenticationToken, ListPatientController.handle);
 router.post('/', CreatePatientController.handle);
-router.put('/', UpdatePatientController.handle);
-router.delete('/:cpf', DeletePatientController.handle);
+router.put('/', verifyAuthenticationToken, UpdatePatientController.handle);
+router.delete(
+  '/:cpf',
+  verifyAuthenticationToken,
+  DeletePatientController.handle,
+);
 
 router.post('/login', AuthenticationController.handle);
 
