@@ -7,16 +7,19 @@ import {
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
-@Entity('point')
-export default class Point {
+@Entity('drugstore')
+export default class Drugstore {
   constructor() {
     if (!this.id) this.id = uuid();
   }
 
-  @Column()
+  @PrimaryColumn()
   readonly id: string;
 
-  @PrimaryColumn()
+  @Column()
+  name: string;
+
+  @Column()
   lat: string;
 
   @Column()
