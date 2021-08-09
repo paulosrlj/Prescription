@@ -38,19 +38,17 @@ class DoctorRepository extends Repository<Doctor> {
     return doctor;
   }
 
-  async findAll(): Promise<Doctor[]> {
-    return this.find({
-      select: ['id', 'name', 'email', 'crm', 'birthDate', 'phone'],
-    });
-  }
-
   async findByCrm(crm: string): Promise<Doctor | undefined> {
-    const doctor = await this.findOne({ crm });
+    const doctor = await this.findOne(crm, {
+      select: ['id', 'name', 'email', 'phone', 'crm', 'password'],
+    });
     return doctor;
   }
 
   async findByEmail(email: string): Promise<Doctor | undefined> {
-    const doctor = await this.findOne({ email });
+    const doctor = await this.findOne(email, {
+      select: ['id', 'name', 'email', 'phone', 'crm', 'password'],
+    });
     return doctor;
   }
 

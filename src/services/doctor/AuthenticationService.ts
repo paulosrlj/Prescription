@@ -15,13 +15,14 @@ class AuthenticationService {
     const doctorRepository = getCustomRepository(DoctorRepository);
 
     const doctor = await doctorRepository.findByCrm(crm);
-    if (!doctor) {
-      throw new ApplicationErrors('E-mail or password invalid', 400);
-    }
 
+    if (!doctor) {
+      throw new ApplicationErrors('CRM or password invalid', 400);
+    }
     const passwordCompared = await compare(password, doctor.password);
+
     if (!passwordCompared) {
-      throw new ApplicationErrors('E-mail or password invalid', 400);
+      throw new ApplicationErrors('CRM or password invalid', 400);
     }
 
     const tokenKey = process.env.TOKEN_KEY || '';

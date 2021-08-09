@@ -2,37 +2,36 @@ import { getCustomRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
-import PatientRepository from '../../repositories/implementations/PatientRepository';
-
-import IPatientAuthenticationRequest from '../../dto/IPatientAuthenticationRequest';
+import IPatientAuthenticationRequest from '../../dto/IDoctorAuthenticationRequest';
 import AplicationErrors from '../../errors/ApplicationErrors';
+import DoctorRepository from '../../repositories/implementations/DoctorRepository';
 
 class AuthenticationService {
   async execute({
-    cpf,
+    crm,
     password,
   }: IPatientAuthenticationRequest): Promise<string> {
-    const patientRepository = getCustomRepository(PatientRepository);
+    const doctorRepository = getCustomRepository(DoctorRepository);
 
-    const patient = await patientRepository.findByCpf(cpf);
-    if (!patient) {
-      throw new AplicationErrors('E-mail or password invalid', 400);
+    const doctor = await doctorRepository.findByCrm(crm);
+    if (!doctor) {
+      throw new AplicationErrors('CRM or password invalid', 400);
     }
 
-    const passwordCompared = await compare(password, patient.password);
+    const passwordCompared = await compare(password, doctor.password);
     if (!passwordCompared) {
-      throw new AplicationErrors('E-mail or password invalid', 400);
+      throw new AplicationErrors('CRM or password invalid', 400);
     }
 
     const tokenKey = process.env.TOKEN_KEY || '';
     const token = sign(
       {
-        cpf: patient.cpf,
+        cpf: doctor.crm,
       },
       tokenKey,
       {
-        expiresIn: '1h',
-        subject: patient.id,
+        expiresIn: '7d',
+        subject: doctor.id,
       },
     );
 

@@ -1,4 +1,6 @@
+import { hash } from 'bcryptjs';
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -13,6 +15,11 @@ import Recipe from './Recipe';
 export default class Doctor {
   constructor() {
     if (!this.id) this.id = uuid();
+  }
+
+  @BeforeInsert()
+  async hashPassord(): Promise<void> {
+    this.password = await hash(this.password, 8);
   }
 
   @Column()

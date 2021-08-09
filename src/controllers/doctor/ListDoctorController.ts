@@ -4,11 +4,12 @@ import ListDoctorService from '../../services/doctor/ListDoctorService';
 
 class ListDoctorController {
   async handle(req: Request, res: Response) {
+    const { crm } = req.params;
     const listDoctorService = new ListDoctorService();
 
-    const doctors = await listDoctorService.execute();
+    const doctor = await listDoctorService.execute(crm);
 
-    return res.json(doctors);
+    return res.json(doctor);
   }
 }
 
