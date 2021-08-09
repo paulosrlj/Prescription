@@ -8,9 +8,9 @@ import AuthenticationController from '../controllers/doctor/AuthenticationContro
 
 const router = Router();
 
-router.get('/', ListDoctorController.handle);
+// router.get('/', ListDoctorController.handle);
 router.post('/', CreateDoctorController.handle);
-router.post('/login', AuthenticationController.handle);
-router.delete('/:crm', DeleteDoctorController.handle);
+// router.post('/login', AuthenticationController.handle);
+// router.delete('/:crm', DeleteDoctorController.handle);
 
 export default router;

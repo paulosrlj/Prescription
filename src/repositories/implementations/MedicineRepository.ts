@@ -43,8 +43,8 @@ class MedicineRepository extends Repository<Medicine> {
     return medicine;
   }
 
-  async findById(id: string): Promise<Medicine | undefined> {
-    const medicine = await this.findOne({ id });
+  async findByIdRegister(idRegister: string): Promise<Medicine | undefined> {
+    const medicine = await this.findOne({ idRegister });
     return medicine;
   }
 

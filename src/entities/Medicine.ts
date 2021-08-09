@@ -2,7 +2,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -31,6 +30,9 @@ export default class Medicine {
 
   @Column({ nullable: false })
   empresa_detentora: string;
+
+  @Column({ nullable: true, default: null })
+  dosagem: string;
 
   @CreateDateColumn()
   created_at: Date;

@@ -6,6 +6,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -49,6 +50,14 @@ export default class Recipe {
 
   // Relacionamento many to many
   @ManyToMany(type => Medicine)
-  @JoinTable()
-  medicines: Medicine;
+  @JoinTable({
+    name: 'recipe_medicine',
+    joinColumn: {
+      name: 'recipe_id',
+    },
+    inverseJoinColumn: {
+      name: 'medicine_idRegister',
+    },
+  })
+  medicines: Medicine[];
 }

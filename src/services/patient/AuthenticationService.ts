@@ -31,7 +31,7 @@ class AuthenticationService {
       },
       tokenKey,
       {
-        expiresIn: '1h',
+        expiresIn: '7d',
         subject: patient.id,
       },
     );

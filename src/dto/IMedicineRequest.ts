@@ -5,3 +5,11 @@ export default interface IMedicine {
   classe_terapeutica: string;
   empresa_detentora: string;
 }
+
+export interface IMedicineType {
+  idRegister: string;
+  dosagem: string;
+}
+export interface IMedicineArray {
+  medicines_array: Array<IMedicineType>;
+}

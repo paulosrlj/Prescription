@@ -16,8 +16,8 @@ class DoctorRepository extends Repository<Doctor> {
   }: IDoctor): Promise<Doctor> {
     if (!crm || !email) throw new ApplicationErrors('CRM not provided', 400);
 
-    const doctorCpfExists = await this.findByCrm(crm);
-    if (doctorCpfExists)
+    const doctorCrmExists = await this.findByCrm(crm);
+    if (doctorCrmExists)
       throw new ApplicationErrors('Doctor already exists', 401);
 
     const doctorEmailExists = await this.findByEmail(email);
