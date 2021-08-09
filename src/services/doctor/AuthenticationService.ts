@@ -28,7 +28,7 @@ class AuthenticationService {
     const tokenKey = process.env.TOKEN_KEY || '';
     const token = sign(
       {
-        cpf: doctor.crm,
+        crm: doctor.crm,
       },
       tokenKey,
       {

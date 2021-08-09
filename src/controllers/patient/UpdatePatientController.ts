@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 
 import UpdatePatientService from '../../services/patient/UpdatePatientService';
 
+import IDoctor from '../../dto/IDoctorRequest';
+
 class PatientController {
   async handle(req: Request, res: Response) {
     const updatePatientService = new UpdatePatientService();
