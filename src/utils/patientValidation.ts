@@ -3,7 +3,7 @@ import { ValidationError } from 'yup';
 
 import IPatientRequest from '../dto/IPatientRequest';
 
-export async function patientValidation(
+export async function patientCreateValidation(
   objectPatient: IPatientRequest,
 ): Promise<void> {
   const schema = Yup.object().shape({
@@ -13,6 +13,25 @@ export async function patientValidation(
     password: Yup.string().required().min(6).max(25),
     phone: Yup.string().required(),
     birthDate: Yup.date().required(),
+  });
+
+  try {
+    await schema.validate(objectPatient, { abortEarly: false });
+  } catch (error) {
+    throw new ValidationError(error);
+  }
+}
+
+export async function patientUpdateValidation(
+  objectPatient: IPatientRequest,
+): Promise<void> {
+  const schema = Yup.object().shape({
+    cpf: Yup.string().required(),
+    name: Yup.string(),
+    email: Yup.string().email(),
+    password: Yup.string().min(6).max(25),
+    phone: Yup.string(),
+    birthDate: Yup.date(),
   });
 
   try {

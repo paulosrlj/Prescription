@@ -4,7 +4,7 @@ import PatientRepository from '../../repositories/implementations/PatientReposit
 import Patient from '../../entities/Patient';
 import IPatientRequest from '../../dto/IPatientRequest';
 
-import { patientValidation } from '../../utils/patientValidation';
+import { patientCreateValidation } from '../../utils/patientValidation';
 import ApplicationErrors from '../../errors/ApplicationErrors';
 
 class CreatePatientService {
@@ -13,7 +13,7 @@ class CreatePatientService {
 
     // Validar os campos
 
-    await patientValidation(patientParams);
+    await patientCreateValidation(patientParams);
 
     // Verificar se o paciente existe
     const patientCpfExists = await patientRepository.findByCpf(

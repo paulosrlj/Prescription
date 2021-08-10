@@ -1,24 +1,21 @@
 import { getCustomRepository } from 'typeorm';
 
 import PatientRepository from '../../repositories/implementations/PatientRepository';
-import Patient from '../../entities/Patient';
 import IPatientRequest from '../../dto/IPatientRequest';
+import { patientUpdateValidation } from '../../utils/patientValidation';
+import ApplicationErrors from '../../errors/ApplicationErrors';
 
 class UpdatePatientService {
-  async execute(
-    cpf: string,
-    { birthDate, password, phone, email, name }: IPatientRequest,
-  ): Promise<Patient | null> {
+  async execute(patientParams: IPatientRequest): Promise<void> {
     const patientRepository = getCustomRepository(PatientRepository);
-    const patient = await patientRepository.updateByCpf(cpf, {
-      birthDate,
-      password,
-      phone,
-      email,
-      name,
-    });
 
-    return patient;
+    await patientUpdateValidation(patientParams);
+
+    const patientExists = await patientRepository.findByCpf(patientParams.cpf);
+    if (!patientExists)
+      throw new ApplicationErrors('Patient does not exists', 401);
+
+    await patientRepository.updateByCpf(patientParams);
   }
 }
 

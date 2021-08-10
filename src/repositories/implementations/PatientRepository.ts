@@ -3,6 +3,7 @@ import {
   EntityRepository,
   getCustomRepository,
   Repository,
+  UpdateResult,
 } from 'typeorm';
 import Patient from '../../entities/Patient';
 
@@ -57,21 +58,16 @@ class PatientRepository extends Repository<Patient> {
     return patient;
   }
 
-  async updateByCpf(cpf: string, patientsCriteria: IPatient): Promise<Patient> {
-    if (!cpf) throw new ApplicationErrors('CPF not provided!', 400);
-
-    const patient = await this.findByCpf(cpf);
-    if (!patient) throw new ApplicationErrors('Patient does not exists', 401);
-
-    const attributes = { ...patientsCriteria };
+  async updateByCpf(patientParams: IPatient): Promise<void> {
+    const attributes = { ...patientParams };
 
     Object.keys(attributes).map(
       key => attributes[key] === undefined && delete attributes[key],
     );
 
-    await this.update({ cpf }, attributes);
+    const { cpf } = attributes;
 
-    return patient;
+    await this.update({ cpf }, attributes);
   }
 
   async deleteByCpf(cpf: string): Promise<DeleteResult> {
