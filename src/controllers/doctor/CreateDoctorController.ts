@@ -4,12 +4,6 @@ import IDoctor from '../../dto/IDoctorRequest';
 import CreateDoctorService from '../../services/doctor/CreateDoctorService';
 
 class CreateDoctorController {
-  // private createDoctorService: CreateDoctorService;
-
-  // constructor() {
-  //   this.createDoctorService = new CreateDoctorService();
-  // }
-
   async handle(req: Request, res: Response) {
     const { name, email, password, birthDate, phone, crm } =
       req.body as unknown as IDoctor;

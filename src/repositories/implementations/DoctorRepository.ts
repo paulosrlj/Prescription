@@ -52,21 +52,16 @@ class DoctorRepository extends Repository<Doctor> {
     return doctor;
   }
 
-  async updateByCrm(crm: string, doctorCriteria: IDoctor): Promise<Doctor> {
-    if (!crm) throw new ApplicationErrors('CRM not provided!', 400);
-
-    const doctor = await this.findByCrm(crm);
-    if (!doctor) throw new ApplicationErrors('Doctor does not exists', 401);
-
-    const attributes = { ...doctorCriteria };
+  async updateByCrm(doctorParams: IDoctor): Promise<void> {
+    const attributes = { ...doctorParams };
 
     Object.keys(attributes).map(
       key => attributes[key] === undefined && delete attributes[key],
     );
 
-    await this.update({ crm }, attributes);
+    const { crm } = attributes;
 
-    return doctor;
+    await this.update({ crm }, attributes);
   }
 
   async deleteByCrm(crm: string): Promise<DeleteResult> {
