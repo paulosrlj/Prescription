@@ -6,12 +6,15 @@ import CreatePatientController from '../controllers/patient/CreatePatientControl
 import DeletePatientController from '../controllers/patient/DeletePatientController';
 import AuthenticationController from '../controllers/patient/AuthenticationController';
 import UpdatePatientController from '../controllers/patient/UpdatePatientController';
+import { verifyAuthenticationToken as adminAuthentication } from '../middlewares/admin/verifyAuthenticationToken';
 import { verifyAuthenticationToken } from '../middlewares/patient/verifyAuthenticationToken';
 
 const router = Router();
 
-router.get('/', verifyAuthenticationToken, ListAllPatientController.handle);
-router.get('/:cpf', verifyAuthenticationToken, ListPatientController.handle);
+// Só um admin pode listar os usuários
+router.get('/', adminAuthentication, ListAllPatientController.handle);
+router.get('/:cpf', adminAuthentication, ListPatientController.handle);
+
 router.post('/', CreatePatientController.handle);
 router.put('/', verifyAuthenticationToken, UpdatePatientController.handle);
 router.delete('/', verifyAuthenticationToken, DeletePatientController.handle);

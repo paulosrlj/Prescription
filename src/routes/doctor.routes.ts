@@ -8,10 +8,11 @@ import UpdateDoctorController from '../controllers/doctor/UpdateDoctorController
 import AuthenticationController from '../controllers/doctor/AuthenticationController';
 
 import { verifyAuthenticationToken } from '../middlewares/doctor/verifyAuthenticationToken';
+import { verifyAuthenticationToken as adminAuthentication } from '../middlewares/admin/verifyAuthenticationToken';
 
 const router = Router();
 
-router.get('/:crm', verifyAuthenticationToken, ListDoctorController.handle);
+router.get('/:crm', adminAuthentication, ListDoctorController.handle);
 router.post('/', CreateDoctorController.handle);
 router.post('/login', AuthenticationController.handle);
 router.put('/', verifyAuthenticationToken, UpdateDoctorController.handle);
