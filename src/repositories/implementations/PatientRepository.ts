@@ -20,16 +20,6 @@ class PatientRepository extends Repository<Patient> {
     phone,
     birthDate,
   }: IPatient): Promise<Patient> {
-    if (!cpf || !email) throw new ApplicationErrors('Cpf not provided', 400);
-
-    const patientCpfExists = await this.findByCpf(cpf);
-    if (patientCpfExists)
-      throw new ApplicationErrors('Patient already exists', 401);
-
-    const patientEmailExists = await this.findByEmail(email);
-    if (patientEmailExists)
-      throw new ApplicationErrors('Email already exists', 401);
-
     const patient = this.create({
       cpf,
       email,
