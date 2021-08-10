@@ -4,5 +4,6 @@ declare namespace Express {
     patient_cpf: string;
     doctor_id: string;
     doctor_crm: string;
+    admin_secret: string;
   }
 }

@@ -11,7 +11,7 @@ import patientRoutes from './routes/patient.routes';
 import doctorRoutes from './routes/doctor.routes';
 import medicineRoutes from './routes/medicine.routes';
 import recipeRoutes from './routes/recipe.routes';
-// import cardRoutes from './routes/cardRoutes/card.routes';
+import adminRoutes from './routes/admin.routes';
 import drugstoreRoutes from './routes/drugstore.routes';
 
 class App {
@@ -35,7 +35,7 @@ class App {
     this.app.use('/doctors', doctorRoutes);
     this.app.use('/medicines', medicineRoutes);
     this.app.use('/recipes', recipeRoutes);
-    // this.app.use('/cards', cardRoutes);
+    this.app.use('/admin', adminRoutes);
     this.app.use('/drugstore', drugstoreRoutes);
   }
 }
