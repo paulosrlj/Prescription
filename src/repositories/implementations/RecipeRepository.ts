@@ -56,6 +56,13 @@ class RecipeRepository extends Repository<Recipe> {
       relations: ['medicines', 'doctor'],
     });
   }
+
+  async findById(id: string): Promise<Recipe> {
+    return this.findOne(id, {
+      select: ['id', 'validade'],
+      relations: ['medicines', 'doctor'],
+    });
+  }
 }
 
 export default RecipeRepository;

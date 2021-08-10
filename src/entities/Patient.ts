@@ -10,14 +10,6 @@ import {
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
-import {
-  IsDate,
-  IsEmail,
-  IsPhoneNumber,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
-
 import { hash } from 'bcryptjs';
 import Card from './Card';
 
@@ -39,23 +31,18 @@ export default class Patient {
   cpf: string;
 
   @Column({ unique: true, nullable: false })
-  @IsEmail()
   email: string;
 
   @Column({ nullable: false })
-  @MinLength(1)
-  @MaxLength(150)
   name: string;
 
   @Column({ nullable: false })
   password: string;
 
   @Column({ nullable: false })
-  @IsPhoneNumber('BR')
   phone: string;
 
   @Column({ nullable: false, type: 'date' })
-  @IsDate()
   birthDate: Date;
 
   @OneToOne(() => Card, card => card.id, {
