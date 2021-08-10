@@ -1,6 +1,6 @@
 import { DeleteResult, getCustomRepository } from 'typeorm';
 
-import MedicineRepository from '../../repositories/MedicineRepository';
+import MedicineRepository from '../../repositories/implementations/MedicineRepository';
 import Medicine from '../../entities/Medicine';
 
 class DeleteMedicineService {

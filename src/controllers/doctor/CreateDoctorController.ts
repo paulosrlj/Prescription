@@ -3,14 +3,20 @@ import { Request, Response } from 'express';
 import IDoctor from '../../dto/IDoctorRequest';
 import CreateDoctorService from '../../services/doctor/CreateDoctorService';
 
-class DoctorController {
+class CreateDoctorController {
+  // private createDoctorService: CreateDoctorService;
+
+  // constructor() {
+  //   this.createDoctorService = new CreateDoctorService();
+  // }
+
   async handle(req: Request, res: Response) {
     const { name, email, password, birthDate, phone, crm } =
       req.body as unknown as IDoctor;
 
-    const createPatientService = new CreateDoctorService();
+    const createDoctorService = new CreateDoctorService();
 
-    const patient = await createPatientService.execute({
+    const doctor = await createDoctorService.execute({
       name,
       email,
       password,
@@ -19,8 +25,10 @@ class DoctorController {
       crm,
     });
 
-    return res.json(patient);
+    if (!doctor) return res.status(401).json(null);
+
+    return res.status(200).json(doctor);
   }
 }
 
-export default new DoctorController();
+export default new CreateDoctorController();

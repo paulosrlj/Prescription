@@ -4,11 +4,11 @@ import {
   getCustomRepository,
   Repository,
 } from 'typeorm';
-import Patient from '../entities/Patient';
+import Patient from '../../entities/Patient';
 
-import IPatient from '../dto/IPatientRequest';
+import IPatient from '../../dto/IPatientRequest';
 import CardRepository from './CardRepository';
-import ApplicationErrors from '../errors/ApplicationErrors';
+import ApplicationErrors from '../../errors/ApplicationErrors';
 
 @EntityRepository(Patient)
 class PatientRepository extends Repository<Patient> {
@@ -67,17 +67,17 @@ class PatientRepository extends Repository<Patient> {
     return patient;
   }
 
-  async updateByCpf(patientsCriteria: IPatient): Promise<Patient> {
-    if (!patientsCriteria.cpf)
-      throw new ApplicationErrors('CPF not provided!', 400);
-
-    const { cpf } = patientsCriteria;
-    const attributes = { ...patientsCriteria };
-    delete attributes.cpf;
+  async updateByCpf(cpf: string, patientsCriteria: IPatient): Promise<Patient> {
+    if (!cpf) throw new ApplicationErrors('CPF not provided!', 400);
 
     const patient = await this.findByCpf(cpf);
-
     if (!patient) throw new ApplicationErrors('Patient does not exists', 401);
+
+    const attributes = { ...patientsCriteria };
+
+    Object.keys(attributes).map(
+      key => attributes[key] === undefined && delete attributes[key],
+    );
 
     await this.update({ cpf }, attributes);
 

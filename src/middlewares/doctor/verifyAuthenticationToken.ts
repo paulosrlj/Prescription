@@ -5,7 +5,7 @@ interface Payload {
   sub: string;
   iat: number;
   exp: number;
-  cpf: string;
+  crm: string;
 }
 
 export function verifyAuthenticationToken(
@@ -23,9 +23,9 @@ export function verifyAuthenticationToken(
   const tokenCripto = token.split(' ');
 
   try {
-    const { sub, cpf } = verify(tokenCripto[1], tokenKey) as Payload;
-    request.patient_id = sub;
-    request.patient_cpf = cpf;
+    const { sub, crm } = verify(tokenCripto[1], tokenKey) as Payload;
+    request.doctor_id = sub;
+    request.doctor_crm = crm;
     return next();
   } catch (error) {
     return response.status(401).json({ message: 'Token is not valid' });

@@ -1,4 +1,3 @@
-import { IsInstance, isInstance, ValidationError } from 'class-validator';
 import { Request, Response } from 'express';
 
 import IPatient from '../../dto/IPatientRequest';
@@ -10,7 +9,6 @@ class PatientController {
       req.body as unknown as IPatient;
 
     const createPatientService = new CreatePatientService();
-
     const patient = await createPatientService.execute({
       name,
       email,

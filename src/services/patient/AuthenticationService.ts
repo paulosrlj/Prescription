@@ -2,7 +2,7 @@ import { getCustomRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
-import PatientRepository from '../../repositories/PatientRepository';
+import PatientRepository from '../../repositories/implementations/PatientRepository';
 
 import IPatientAuthenticationRequest from '../../dto/IPatientAuthenticationRequest';
 import ApplicationErrors from '../../errors/ApplicationErrors';
@@ -31,7 +31,7 @@ class AuthenticationService {
       },
       tokenKey,
       {
-        expiresIn: '1h',
+        expiresIn: '7d',
         subject: patient.id,
       },
     );

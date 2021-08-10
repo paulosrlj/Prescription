@@ -1,8 +1,8 @@
 import { DeleteResult, EntityRepository, Repository } from 'typeorm';
-import Doctor from '../entities/Doctor';
+import Doctor from '../../entities/Doctor';
 
-import IDoctor from '../dto/IDoctorRequest';
-import ApplicationErrors from '../errors/ApplicationErrors';
+import IDoctor from '../../dto/IDoctorRequest';
+import ApplicationErrors from '../../errors/ApplicationErrors';
 
 @EntityRepository(Doctor)
 class DoctorRepository extends Repository<Doctor> {
@@ -16,8 +16,8 @@ class DoctorRepository extends Repository<Doctor> {
   }: IDoctor): Promise<Doctor> {
     if (!crm || !email) throw new ApplicationErrors('CRM not provided', 400);
 
-    const doctorCpfExists = await this.findByCrm(crm);
-    if (doctorCpfExists)
+    const doctorCrmExists = await this.findByCrm(crm);
+    if (doctorCrmExists)
       throw new ApplicationErrors('Doctor already exists', 401);
 
     const doctorEmailExists = await this.findByEmail(email);
@@ -38,33 +38,31 @@ class DoctorRepository extends Repository<Doctor> {
     return doctor;
   }
 
-  async findAll(): Promise<Doctor[]> {
-    return this.find({
-      select: ['id', 'name', 'email', 'crm', 'birthDate', 'phone'],
-    });
-  }
-
   async findByCrm(crm: string): Promise<Doctor | undefined> {
-    const doctor = await this.findOne({ crm });
+    const doctor = await this.findOne(crm, {
+      select: ['id', 'name', 'email', 'phone', 'crm', 'password'],
+    });
     return doctor;
   }
 
   async findByEmail(email: string): Promise<Doctor | undefined> {
-    const doctor = await this.findOne({ email });
+    const doctor = await this.findOne(email, {
+      select: ['id', 'name', 'email', 'phone', 'crm', 'password'],
+    });
     return doctor;
   }
 
-  async updateByCrm(doctorCriteria: IDoctor): Promise<Doctor> {
-    if (!doctorCriteria.crm)
-      throw new ApplicationErrors('CRM not provided!', 400);
-
-    const { crm } = doctorCriteria;
-    const attributes = { ...doctorCriteria };
-    delete attributes.crm;
+  async updateByCrm(crm: string, doctorCriteria: IDoctor): Promise<Doctor> {
+    if (!crm) throw new ApplicationErrors('CRM not provided!', 400);
 
     const doctor = await this.findByCrm(crm);
-
     if (!doctor) throw new ApplicationErrors('Doctor does not exists', 401);
+
+    const attributes = { ...doctorCriteria };
+
+    Object.keys(attributes).map(
+      key => attributes[key] === undefined && delete attributes[key],
+    );
 
     await this.update({ crm }, attributes);
 

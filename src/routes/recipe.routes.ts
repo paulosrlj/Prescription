@@ -1,16 +1,11 @@
 import { Router } from 'express';
 
-import ListPatientController from '../controllers/patient/ListPatientController';
-import CreatePatientController from '../controllers/patient/CreatePatientController';
-import DeletePatientController from '../controllers/patient/DeletePatientController';
-import AuthenticationController from '../controllers/patient/AuthenticationController';
-// import verifyAuthenticationToken from '../../middleware/patient/verifyAuthenticationToken';
+import CreateRecipeController from '../controllers/recipe/CreateRecipeController';
+import ListAllRecipeController from '../controllers/recipe/ListAllRecipeController.ts';
 
 const router = Router();
 
-router.get('/', ListPatientController.handle);
-router.post('/', CreatePatientController.handle);
-router.post('/login', AuthenticationController.handle);
-router.delete('/:cpf', DeletePatientController.handle);
+router.get('/', ListAllRecipeController.handle);
+router.post('/', CreateRecipeController.handle);
 
 export default router;
