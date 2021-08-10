@@ -1,6 +1,6 @@
 import { getCustomRepository } from 'typeorm';
 
-import DrugstoreRepository from '../../repositories/DrugstoreRepository';
+import DrugstoreRepository from '../../repositories/implementations/DrugstoreRepository';
 import Drugstore from '../../entities/Drugstore';
 import IDrugstoreRequest from '../../dto/IDrugstoreRequest';
 

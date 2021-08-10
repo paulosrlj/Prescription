@@ -1,7 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
-import Drugstore from '../entities/Drugstore';
+import Drugstore from '../../entities/Drugstore';
 
-import IDrugstore from '../dto/IDrugstoreRequest';
+import IDrugstore from '../../dto/IDrugstoreRequest';
 
 @EntityRepository(Drugstore)
 class DrugstoreRepository extends Repository<Drugstore> {
