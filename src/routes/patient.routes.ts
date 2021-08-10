@@ -14,11 +14,7 @@ router.get('/', verifyAuthenticationToken, ListAllPatientController.handle);
 router.get('/:cpf', verifyAuthenticationToken, ListPatientController.handle);
 router.post('/', CreatePatientController.handle);
 router.put('/', verifyAuthenticationToken, UpdatePatientController.handle);
-router.delete(
-  '/:cpf',
-  verifyAuthenticationToken,
-  DeletePatientController.handle,
-);
+router.delete('/', verifyAuthenticationToken, DeletePatientController.handle);
 
 router.post('/login', AuthenticationController.handle);
 

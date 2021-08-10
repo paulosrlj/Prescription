@@ -71,9 +71,6 @@ class PatientRepository extends Repository<Patient> {
   }
 
   async deleteByCpf(cpf: string): Promise<DeleteResult> {
-    const patient = await this.findByCpf(cpf);
-    if (!patient) throw new ApplicationErrors('Patient does not exists', 401);
-
     return this.delete({ cpf });
   }
 }

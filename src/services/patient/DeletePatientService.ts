@@ -1,14 +1,16 @@
-import { DeleteResult, getCustomRepository } from 'typeorm';
+import { getCustomRepository } from 'typeorm';
+import ApplicationErrors from '../../errors/ApplicationErrors';
 
 import PatientRepository from '../../repositories/implementations/PatientRepository';
 
 class DeletePatientService {
-  async execute(cpf: string): Promise<DeleteResult> {
+  async execute(cpf: string): Promise<void> {
     const patientRepository = getCustomRepository(PatientRepository);
 
-    const patient = await patientRepository.deleteByCpf(cpf);
+    const patient = await patientRepository.findByCpf(cpf);
+    if (!patient) throw new ApplicationErrors('Patient does not exists', 401);
 
-    return patient;
+    await patientRepository.deleteByCpf(cpf);
   }
 }
 

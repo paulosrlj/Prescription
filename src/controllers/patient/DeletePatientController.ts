@@ -4,7 +4,7 @@ import DeletePatientService from '../../services/patient/DeletePatientService';
 
 class DeletePatientController {
   async handle(req: Request, res: Response) {
-    const { cpf } = req.params;
+    const cpf = req.patient_cpf;
 
     const deletePatientService = new DeletePatientService();
 
