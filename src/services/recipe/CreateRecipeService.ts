@@ -4,22 +4,21 @@ import RecipeRepository from '../../repositories/implementations/RecipeRepositor
 import IRecipeRequest from '../../dto/IRecipeRequest';
 import Recipe from '../../entities/Recipe';
 import { IMedicineArray } from '../../dto/IMedicineRequest';
+import { recipeCreateValidation } from '../../utils/recipeValidation';
+
+interface doctorType {
+  doctor_crm: string;
+}
 
 class CreateRecipeService {
-  async execute({
-    cpf_patient,
-    validade,
-    doctor_crm,
-    medicines_array,
-  }: IRecipeRequest & IMedicineArray): Promise<Recipe> {
+  async execute(
+    recipeParams: IRecipeRequest & IMedicineArray & doctorType,
+  ): Promise<Recipe> {
     const recipeRepository = getCustomRepository(RecipeRepository);
 
-    const recipe = await recipeRepository.createRecipe({
-      cpf_patient,
-      validade,
-      doctor_crm,
-      medicines_array,
-    });
+    await recipeCreateValidation(recipeParams);
+
+    const recipe = await recipeRepository.createRecipe(recipeParams);
 
     return recipe;
   }

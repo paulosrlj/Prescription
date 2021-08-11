@@ -4,6 +4,7 @@ import IRecipe from '../../dto/IRecipeRequest';
 import CreateRecipeService from '../../services/recipe/CreateRecipeService';
 
 import { IMedicineArray } from '../../dto/IMedicineRequest';
+import { recipeCreateValidation } from '../../utils/recipeValidation';
 
 interface doctorType {
   doctor_crm: string;
@@ -11,9 +12,9 @@ interface doctorType {
 
 class CreateRecipeController {
   async handle(req: Request, res: Response) {
-    const { cpf_patient, validade, medicines_array, doctor_crm } =
+    const { cpf_patient, validade, medicines_array, due } =
       req.body as IRecipe & IMedicineArray & doctorType;
-    // const { doctor_crm } = req;
+    const { doctor_crm } = req;
 
     const createRecipeService = new CreateRecipeService();
 
@@ -22,6 +23,7 @@ class CreateRecipeController {
       validade,
       doctor_crm,
       medicines_array,
+      due,
     });
 
     return res.json(recipe);

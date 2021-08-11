@@ -16,6 +16,7 @@ class RecipeRepository extends Repository<Recipe> {
     cpf_patient,
     doctor_crm,
     medicines_array,
+    due,
   }: IRecipeRequest & IMedicineArray): Promise<Recipe> {
     // Buscar o paciente e cartão do paciente
     const patientRepository = getCustomRepository(PatientRepository);
@@ -30,7 +31,7 @@ class RecipeRepository extends Repository<Recipe> {
     if (!doctor) throw new ApplicationErrors('Doctor does not exists', 401);
 
     // Criar a receita
-    const recipe = this.create({ card, validade, doctor, medicines: [] });
+    const recipe = this.create({ card, validade, doctor, medicines: [], due });
 
     // Buscar e adicionar os remédios
     const medicineRepository = getCustomRepository(MedicineRepository);

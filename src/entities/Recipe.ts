@@ -27,6 +27,9 @@ export default class Recipe {
   @Column({ nullable: false, type: 'date' })
   validade: Date;
 
+  @Column({ nullable: false })
+  due: boolean;
+
   @ManyToOne(type => Card, recipes => Recipe, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
