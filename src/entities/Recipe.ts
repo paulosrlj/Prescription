@@ -6,6 +6,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -13,6 +14,7 @@ import { v4 as uuid } from 'uuid';
 
 import Card from './Card';
 import Doctor from './Doctor';
+import Image from './Image';
 import Medicine from './Medicine';
 
 @Entity('recipes')
@@ -62,4 +64,10 @@ export default class Recipe {
     },
   })
   medicines: Medicine[];
+
+  @OneToMany(() => Image, image => image.recipe, {
+    cascade: ['insert', 'update'],
+  })
+  @JoinColumn({ name: 'recipe_image_id' })
+  imagesPath: Image[];
 }
