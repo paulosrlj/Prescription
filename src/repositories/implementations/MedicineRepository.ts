@@ -5,20 +5,8 @@ import IMedicine from '../../dto/IMedicineRequest';
 
 @EntityRepository(Medicine)
 class MedicineRepository extends Repository<Medicine> {
-  async createMedicine({
-    idRegister,
-    nome,
-    categoria,
-    classe_terapeutica,
-    empresa_detentora,
-  }: IMedicine): Promise<Medicine> {
-    const medicine = this.create({
-      idRegister,
-      nome,
-      categoria,
-      classe_terapeutica,
-      empresa_detentora,
-    });
+  async createMedicine(medicineParams: IMedicine): Promise<Medicine> {
+    const medicine = this.create(medicineParams);
 
     await this.save(medicine);
 

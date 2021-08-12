@@ -9,7 +9,7 @@ export interface IPatientRepository {
     email,
     password,
     phone,
-    birthDate,
+    birth_date,
   }: IPatient): Promise<Patient>;
   findAll(): Promise<Patient[]>;
   findByCpf(cpf: string): Promise<Patient | undefined>;

@@ -74,6 +74,13 @@ class RecipeRepository extends Repository<Recipe> {
 
     await this.update({ id }, recipeParams);
   }
+
+  async dueRecipe(recipeParams: IRecipeRequest): Promise<void> {
+    const recipe = await this.findById(recipeParams.id);
+    recipe.due = recipeParams.due;
+
+    await this.save(recipe);
+  }
 }
 
 export default RecipeRepository;
