@@ -7,7 +7,7 @@ class DeleteMedicineService {
   async execute(idRegister: string): Promise<DeleteResult> {
     const medicineRepository = getCustomRepository(MedicineRepository);
 
-    const medicine = await medicineRepository.delete({ idRegister });
+    const medicine = await medicineRepository.deleteByIdRegister(idRegister);
 
     return medicine;
   }

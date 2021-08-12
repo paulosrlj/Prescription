@@ -8,7 +8,7 @@ class DeleteMedicineController {
 
     const deleteMedicineService = new DeleteMedicineService();
 
-    const medicine = await deleteMedicineService.execute(idRegister);
+    await deleteMedicineService.execute(idRegister);
 
     return res.status(200).json({ message: 'Medicine removed' });
   }
