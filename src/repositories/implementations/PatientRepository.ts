@@ -17,7 +17,7 @@ class PatientRepository extends Repository<Patient> {
     email,
     password,
     phone,
-    birthDate,
+    birth_date,
   }: IPatient): Promise<Patient> {
     const patient = this.create({
       cpf,
@@ -25,7 +25,7 @@ class PatientRepository extends Repository<Patient> {
       name,
       password,
       phone,
-      birthDate,
+      birth_date,
     });
 
     const cardRepository = getCustomRepository(CardRepository);
@@ -40,13 +40,13 @@ class PatientRepository extends Repository<Patient> {
 
   async findAll(): Promise<Patient[]> {
     return this.find({
-      select: ['id', 'name', 'email', 'cpf', 'birthDate', 'phone'],
+      select: ['id', 'name', 'email', 'cpf', 'birth_date', 'phone'],
       relations: ['card'],
     });
   }
 
   async findByCpf(cpf: string): Promise<Patient | undefined> {
-    const patient = await this.findOne({ cpf });
+    const patient = await this.findOne({ cpf }, { relations: ['card'] });
     return patient;
   }
 

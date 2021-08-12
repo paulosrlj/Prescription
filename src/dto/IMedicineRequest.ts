@@ -11,5 +11,5 @@ export interface IMedicineType {
   dosagem: string;
 }
 export interface IMedicineArray {
-  medicines_array: Array<IMedicineType>;
+  medicines: Array<IMedicineType>;
 }

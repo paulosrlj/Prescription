@@ -41,7 +41,7 @@ export default class Doctor {
   phone: string;
 
   @Column({ nullable: false, type: 'date' })
-  birthDate: Date;
+  birth_date: Date;
 
   @OneToMany(type => Recipe, doctor => Doctor)
   recipes: Recipe[];

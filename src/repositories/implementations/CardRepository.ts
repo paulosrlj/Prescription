@@ -19,7 +19,7 @@ class CardRepository extends Repository<Card> {
   }
 
   async findById(id: string): Promise<Card | undefined> {
-    const card = await this.findOne({ id });
+    const card = await this.findOne({ id }, { relations: ['patient'] });
     return card;
   }
 }

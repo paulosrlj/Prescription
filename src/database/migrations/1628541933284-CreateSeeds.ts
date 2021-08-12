@@ -12,12 +12,12 @@ export class CreateSeeds1628541933284 implements MigrationInterface {
     );
 
     await queryRunner.query(
-      `INSERT INTO patients(id, cpf, email, name, password, phone, birthDate, created_at, updated_at, cardId)
+      `INSERT INTO patients(id, cpf, email, name, password, phone, birth_date, created_at, updated_at, cardId)
       VALUES ("ece90371-5de7-4cc6-89be-f3b6215df967", "50000000076", "paulo@test.com",
       "Paulo Calamidade", "123456", "99999999", "DATE('30/05/2001')", DATETIME('now'), DATETIME('now'), "6ea451b2-fb78-440f-b61e-d42ab7b80a26")`,
     );
     await queryRunner.query(
-      `INSERT INTO patients(id, cpf, email, name, password, phone, birthDate, created_at, updated_at, cardId)
+      `INSERT INTO patients(id, cpf, email, name, password, phone, birth_date, created_at, updated_at, cardId)
       VALUES ("08b053e2-5b42-4b01-941b-fdd1741e0225", "99999999976", "chrisi@test.com",
       "Chrisi Tiro Certo", "123456", "99999999", "DATE('02/03/1990')", DATETIME('now'), DATETIME('now'), "57f18ca8-01d0-4808-b934-3de5f4a52bcb")`,
     );
@@ -35,13 +35,13 @@ export class CreateSeeds1628541933284 implements MigrationInterface {
     );
 
     await queryRunner.query(
-      `INSERT INTO doctors(id, crm, email, name, password, phone, birthDate, created_at, updated_at)
+      `INSERT INTO doctors(id, crm, email, name, password, phone, birth_date, created_at, updated_at)
       VALUES ("8b4fe337-69a2-4a27-9c37-20665f7730f2", "90257981272", "bruce@test.com",
       "Bruce Wayne", "102030", "99999999", "DATE('12/05/1985')", DATETIME('now'), DATETIME('now'))`,
     );
 
     await queryRunner.query(
-      `INSERT INTO recipes(id, validade, created_at, updated_at, cardId, doctorCrm)
+      `INSERT INTO recipes(id, validade, created_at, updated_at, cardId, doctor_crm)
       VALUES ("1f416741-5fa2-43c3-9a3e-f20074913df1", "DATE('02/08/2025')", DATETIME('now'), DATETIME('now'),
       "6ea451b2-fb78-440f-b61e-d42ab7b80a26", "90257981272")`,
     );

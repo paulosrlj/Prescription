@@ -15,7 +15,7 @@ class RecipeRepository extends Repository<Recipe> {
     validade,
     cpf_patient,
     doctor_crm,
-    medicines_array,
+    medicines,
     due,
   }: IRecipeRequest & IMedicineArray): Promise<Recipe> {
     // Buscar o paciente e cartão do paciente
@@ -36,7 +36,7 @@ class RecipeRepository extends Repository<Recipe> {
     // Buscar e adicionar os remédios
     const medicineRepository = getCustomRepository(MedicineRepository);
 
-    medicines_array.map(async m => {
+    medicines.map(async m => {
       // Buscar o remédio
       const medicine = await medicineRepository.findByIdRegister(m.idRegister);
       if (!medicine)
@@ -53,16 +53,26 @@ class RecipeRepository extends Repository<Recipe> {
 
   async findAll(): Promise<Recipe[]> {
     return this.find({
-      select: ['id', 'validade'],
+      select: ['id', 'validade', 'due'],
       relations: ['medicines', 'doctor'],
     });
   }
 
   async findById(id: string): Promise<Recipe> {
     return this.findOne(id, {
-      select: ['id', 'validade'],
-      relations: ['medicines', 'doctor'],
+      select: ['id', 'validade', 'due'],
+      relations: ['card', 'medicines', 'doctor'],
     });
+  }
+
+  async updateById(
+    recipeParams: IRecipeRequest & IMedicineArray,
+  ): Promise<void> {
+    const { id } = recipeParams;
+    delete recipeParams.doctor_crm;
+    delete recipeParams.id;
+
+    await this.update({ id }, recipeParams);
   }
 }
 

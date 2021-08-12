@@ -7,12 +7,12 @@ export async function patientCreateValidation(
   objectPatient: IPatientRequest,
 ): Promise<void> {
   const schema = Yup.object().shape({
-    cpf: Yup.string().required(),
+    cpf: Yup.string().min(11).max(11).required(),
     name: Yup.string().required(),
     email: Yup.string().email().required(),
-    password: Yup.string().required().min(6).max(25),
+    password: Yup.string().min(6).max(25).required(),
     phone: Yup.string().required(),
-    birthDate: Yup.date().required(),
+    birth_date: Yup.date().required(),
   });
 
   try {

@@ -8,7 +8,10 @@ export async function recipeCreateValidation(
 ): Promise<void> {
   const schema = Yup.object().shape({
     cpf_patient: Yup.string().required(),
-    validade: Yup.date().required(),
+    validade: Yup.date()
+      .required()
+      .min(new Date().toLocaleDateString())
+      .max(new Date('2099-12-31')),
     medicines_array: Yup.array().of(
       Yup.object().shape({
         dosagem: Yup.string().required(),
@@ -18,6 +21,7 @@ export async function recipeCreateValidation(
     doctor_crm: Yup.string().required().min(6).max(25),
     due: Yup.boolean().required(),
   });
+
   try {
     await schema.validate(objectRecipe, { abortEarly: false });
   } catch (error) {
@@ -29,16 +33,17 @@ export async function recipeUpdateValidation(
   objectRecipe: IRecipeRequest,
 ): Promise<void> {
   const schema = Yup.object().shape({
-    cpf_patient: Yup.string().required(),
-    validade: Yup.date().required(),
+    validade: Yup.date()
+      .min(new Date().toLocaleDateString())
+      .max(new Date('2099-12-31')),
     medicines_array: Yup.array().of(
       Yup.object().shape({
-        dosagem: Yup.string().required(),
-        idRegister: Yup.string().required(),
+        dosagem: Yup.string(),
+        idRegister: Yup.string(),
       }),
     ),
     doctor_crm: Yup.string().required().min(6).max(25),
-    due: Yup.boolean().required(),
+    due: Yup.boolean(),
   });
 
   try {

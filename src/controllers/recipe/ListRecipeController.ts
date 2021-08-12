@@ -13,6 +13,8 @@ class ListRecipeController {
     const recipeFiltered = {
       id: recipe.id,
       validade: recipe.validade,
+      due: recipe.due,
+      card: recipe.card,
       medicines: recipe.medicines,
       doctor: {
         id: recipe.doctor.id,

@@ -4,5 +4,5 @@ export default interface IDoctor {
   email?: string;
   password?: string;
   phone?: string;
-  birthDate?: Date;
+  birth_date?: Date;
 }

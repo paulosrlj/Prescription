@@ -12,6 +12,7 @@ class ListAllRecipeController {
       return {
         id: recipe.id,
         validade: recipe.validade,
+        due: recipe.due,
         medicines: recipe.medicines,
         doctor: {
           id: recipe.doctor.id,

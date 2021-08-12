@@ -3,17 +3,17 @@ import { Request, Response } from 'express';
 import IPatient from '../../dto/IPatientRequest';
 import CreatePatientService from '../../services/patient/CreatePatientService';
 
-class PatientController {
+class CreatePatientController {
   async handle(req: Request, res: Response) {
-    const { name, email, password, birthDate, phone, cpf } =
-      req.body as unknown as IPatient;
+    const { name, email, password, birth_date, phone, cpf } =
+      req.body as IPatient;
 
     const createPatientService = new CreatePatientService();
     const patient = await createPatientService.execute({
       name,
       email,
       password,
-      birthDate,
+      birth_date,
       phone,
       cpf,
     });
@@ -24,4 +24,4 @@ class PatientController {
   }
 }
 
-export default new PatientController();
+export default new CreatePatientController();

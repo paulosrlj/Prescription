@@ -5,7 +5,7 @@ import CreateDoctorService from '../../services/doctor/CreateDoctorService';
 
 class CreateDoctorController {
   async handle(req: Request, res: Response) {
-    const { name, email, password, birthDate, phone, crm } =
+    const { name, email, password, birth_date, phone, crm } =
       req.body as unknown as IDoctor;
 
     const createDoctorService = new CreateDoctorService();
@@ -14,7 +14,7 @@ class CreateDoctorController {
       name,
       email,
       password,
-      birthDate,
+      birth_date,
       phone,
       crm,
     });

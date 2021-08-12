@@ -43,7 +43,7 @@ export default class Patient {
   phone: string;
 
   @Column({ nullable: false, type: 'date' })
-  birthDate: Date;
+  birth_date: Date;
 
   @OneToOne(() => Card, card => card.id, {
     onUpdate: 'CASCADE',

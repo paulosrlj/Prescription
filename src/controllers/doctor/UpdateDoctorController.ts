@@ -7,12 +7,12 @@ class UpdateDoctorController {
   async handle(req: Request, res: Response) {
     const updateDoctorService = new UpdateDoctorService();
 
-    const { birthDate, password, phone, email, name } = req.body as IDoctor;
+    const { birth_date, password, phone, email, name } = req.body as IDoctor;
     const crm = req.doctor_crm;
 
     await updateDoctorService.execute({
       crm,
-      birthDate,
+      birth_date,
       password,
       phone,
       email,

@@ -41,7 +41,7 @@ export default class Recipe {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
-  @JoinColumn()
+  @JoinColumn({ name: 'doctor_crm', referencedColumnName: 'crm' })
   doctor: Doctor;
 
   @CreateDateColumn()

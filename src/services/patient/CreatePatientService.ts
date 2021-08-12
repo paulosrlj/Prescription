@@ -15,6 +15,11 @@ class CreatePatientService {
 
     await patientCreateValidation(patientParams);
 
+    // Formatar a data
+    patientParams.birth_date = new Date(
+      patientParams.birth_date,
+    ).toLocaleDateString();
+
     // Verificar se o paciente existe
     const patientCpfExists = await patientRepository.findByCpf(
       patientParams.cpf,

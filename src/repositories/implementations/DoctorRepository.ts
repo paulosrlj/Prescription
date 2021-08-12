@@ -12,7 +12,7 @@ class DoctorRepository extends Repository<Doctor> {
     email,
     password,
     phone,
-    birthDate,
+    birth_date,
   }: IDoctor): Promise<Doctor> {
     if (!crm || !email) throw new ApplicationErrors('CRM not provided', 400);
 
@@ -30,7 +30,7 @@ class DoctorRepository extends Repository<Doctor> {
       name,
       password,
       phone,
-      birthDate,
+      birth_date,
     });
 
     await this.save(doctor);

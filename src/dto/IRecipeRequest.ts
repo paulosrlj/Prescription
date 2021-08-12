@@ -1,6 +1,7 @@
 export default interface IRecipeRequest {
-  validade: Date;
-  cpf_patient: string;
+  validade: string;
+  cpf_patient?: string;
   doctor_crm?: string;
   due: boolean;
+  id?: string;
 }

@@ -8,13 +8,13 @@ class PatientController {
   async handle(req: Request, res: Response) {
     const updatePatientService = new UpdatePatientService();
 
-    const { birthDate, password, phone, email, name } =
+    const { birth_date, password, phone, email, name } =
       req.body as IPatientRequest;
     const cpf = req.patient_cpf;
 
     await updatePatientService.execute({
       cpf,
-      birthDate,
+      birth_date,
       password,
       phone,
       email,

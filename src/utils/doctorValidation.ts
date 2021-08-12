@@ -12,7 +12,7 @@ export async function doctorCreateValidation(
     email: Yup.string().email().required(),
     password: Yup.string().required().min(6).max(25),
     phone: Yup.string().required(),
-    birthDate: Yup.date().required(),
+    birth_date: Yup.date().required(),
   });
 
   try {
@@ -31,7 +31,7 @@ export async function doctorUpdateValidation(
     email: Yup.string().email(),
     password: Yup.string().min(6).max(25),
     phone: Yup.string(),
-    birthDate: Yup.date(),
+    birth_date: Yup.date(),
   });
 
   try {
