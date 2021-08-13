@@ -68,6 +68,6 @@ export default class Recipe {
   @OneToMany(() => Image, image => image.recipe, {
     cascade: ['insert', 'update'],
   })
-  @JoinColumn({ name: 'recipe_image_id' })
+  @JoinColumn({ name: 'image_id', referencedColumnName: 'id' })
   imagesPath: Image[];
 }

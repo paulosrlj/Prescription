@@ -4,6 +4,7 @@ import IRecipeRequest from '../../dto/IRecipeRequest';
 import { IMedicineArray } from '../../dto/IMedicineRequest';
 
 import Recipe from '../../entities/Recipe';
+
 import SQLiteDoctorRepository from './SQLiteDoctorRepository';
 import SQLiteMedicineRepository from './SQLiteMedicineRepository';
 import PatientRepository from './SQLitePatientRepository';
@@ -16,20 +17,16 @@ class SQLiteRecipeRepository
   extends Repository<Recipe>
   implements IRecipeRepository
 {
-  async createRecipe({
-    validade,
-    cpf_patient,
-    doctor_crm,
-    medicines,
-    due,
-  }: IRecipeRequest & IMedicineArray): Promise<Recipe> {
+  async createRecipe(recipeParams: IRecipeRequest & IMedicineArray): Promise<Recipe> {
     // Buscar o paciente e cartão do paciente
+    const { cpf_patient, doctor_crm, medicines } = recipeParams;
     const patientRepository = getCustomRepository(PatientRepository);
     const cardRepository = getCustomRepository(SQLiteCardRepository);
     const patient = await patientRepository.findByCpf(cpf_patient);
 
     if (!patient) throw new ApplicationErrors('Patient does not exists', 401);
     const { card } = patient;
+    
     card.quantidade_receitas += 1;
 
     // Buscar o médico
@@ -38,6 +35,7 @@ class SQLiteRecipeRepository
     if (!doctor) throw new ApplicationErrors('Doctor does not exists', 401);
 
     // Criar a receita
+
     const recipe = this.create({ card, validade, doctor, medicines: [], due });
 
     // Buscar e adicionar os remédios
@@ -55,20 +53,24 @@ class SQLiteRecipeRepository
 
     await this.save(recipe);
     await cardRepository.save(card);
+
     return recipe;
   }
 
   async findAll(): Promise<Recipe[]> {
     return this.find({
       select: ['id', 'validade', 'due'],
-      relations: ['medicines', 'doctor'],
+
+      relations: ['medicines', 'doctor', 'imagesPath'],
+
     });
   }
 
   async findById(id: string): Promise<Recipe> {
     return this.findOne(id, {
       select: ['id', 'validade', 'due'],
-      relations: ['card', 'medicines', 'doctor'],
+
+      relations: ['card', 'medicines', 'doctor', 'imagesPath'],
     });
   }
 

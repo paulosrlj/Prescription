@@ -17,6 +17,11 @@ export async function recipeCreateValidation(
     ),
     doctor_crm: Yup.string().required().min(6).max(25),
     due: Yup.boolean().required(),
+    images: Yup.array(
+      Yup.object().shape({
+        path: Yup.string().required(),
+      }),
+    ),
   });
 
   try {
