@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
@@ -20,6 +21,9 @@ export default class Image {
   readonly id: string;
 
   @Column()
+  name: string;
+
+  @Column({ nullable: true })
   path: string;
 
   @CreateDateColumn()
@@ -32,5 +36,6 @@ export default class Image {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'recipe_id', referencedColumnName: 'id' })
   recipe: Recipe;
 }

@@ -54,14 +54,14 @@ class RecipeRepository extends Repository<Recipe> {
   async findAll(): Promise<Recipe[]> {
     return this.find({
       select: ['id', 'validade', 'due'],
-      relations: ['medicines', 'doctor'],
+      relations: ['medicines', 'doctor', 'imagesPath'],
     });
   }
 
   async findById(id: string): Promise<Recipe> {
     return this.findOne(id, {
       select: ['id', 'validade', 'due'],
-      relations: ['card', 'medicines', 'doctor'],
+      relations: ['card', 'medicines', 'doctor', 'imagesPath'],
     });
   }
 

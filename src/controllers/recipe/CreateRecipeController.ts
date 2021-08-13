@@ -15,6 +15,9 @@ class CreateRecipeController {
       IMedicineArray &
       doctorType;
     const { doctor_crm } = req;
+    const reqImages = req.files as Express.Multer.File[];
+
+    const imagesPath = reqImages.map(image => ({ path: image.filename }));
 
     const createRecipeService = new CreateRecipeService();
 
@@ -24,6 +27,7 @@ class CreateRecipeController {
       doctor_crm,
       medicines,
       due,
+      imagesPath,
     });
 
     return res.json(recipe);
