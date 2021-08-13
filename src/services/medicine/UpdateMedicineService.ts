@@ -1,14 +1,21 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, ObjectType } from 'typeorm';
 
-import MedicineRepository from '../../repositories/implementations/MedicineRepository';
 import IMedicineRequest from '../../dto/IMedicineRequest';
 import { medicineUpdateValidation } from '../../utils/medicineValidation';
 import ApplicationErrors from '../../errors/ApplicationErrors';
+import { IMedicineRepository } from '../../repositories/IMedicineRepository';
 
 class UpdateMedicineService {
-  async execute(medicineParams: IMedicineRequest): Promise<void> {
-    const medicineRepository = getCustomRepository(MedicineRepository);
+  MedicineRepository: IMedicineRepository;
 
+  constructor(MedicineRepository: IMedicineRepository) {
+    this.MedicineRepository = MedicineRepository;
+  }
+
+  async execute(medicineParams: IMedicineRequest): Promise<void> {
+    const medicineRepository = getCustomRepository(
+      this.MedicineRepository as unknown as ObjectType<IMedicineRepository>,
+    );
     await medicineUpdateValidation(medicineParams);
 
     const medicineExists = await medicineRepository.findByIdRegister(

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import IMedicine from '../../dto/IMedicineRequest';
 import CreateMedicineService from '../../services/medicine/CreateMedicineService';
+import SQLiteMedicineRepository from '../../repositories/implementations/SQLiteMedicineRepository';
 
 class MedicineController {
   async handle(req: Request, res: Response) {
@@ -14,7 +15,9 @@ class MedicineController {
       dosagem,
     } = req.body as unknown as IMedicine;
 
-    const createMedicineService = new CreateMedicineService();
+    const createMedicineService = new CreateMedicineService(
+      new SQLiteMedicineRepository(),
+    );
 
     const medicine = await createMedicineService.execute({
       idRegister,

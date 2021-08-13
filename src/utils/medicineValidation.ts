@@ -12,7 +12,7 @@ export async function medicineCreateValidation(
     categoria: Yup.string().required(),
     classe_terapeutica: Yup.string().required(),
     empresa_detentora: Yup.string().required(),
-    dosagem: Yup.string().required(),
+    dosagem: Yup.string(),
   });
 
   try {
@@ -31,7 +31,7 @@ export async function medicineUpdateValidation(
     categoria: Yup.string().required(),
     classe_terapeutica: Yup.string().required(),
     empresa_detentora: Yup.string().required(),
-    dosagem: Yup.string().required(),
+    dosagem: Yup.string(),
   });
 
   try {

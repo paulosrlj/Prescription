@@ -5,7 +5,7 @@ import { IMedicineArray } from '../../dto/IMedicineRequest';
 
 import Recipe from '../../entities/Recipe';
 import SQLiteDoctorRepository from './SQLiteDoctorRepository';
-import MedicineRepository from './MedicineRepository';
+import SQLiteMedicineRepository from './SQLiteMedicineRepository';
 import PatientRepository from './SQLitePatientRepository';
 import ApplicationErrors from '../../errors/ApplicationErrors';
 import CardRepository from './CardRepository';
@@ -37,7 +37,7 @@ class RecipeRepository extends Repository<Recipe> {
     const recipe = this.create({ card, validade, doctor, medicines: [], due });
 
     // Buscar e adicionar os remédios
-    const medicineRepository = getCustomRepository(MedicineRepository);
+    const medicineRepository = getCustomRepository(SQLiteMedicineRepository);
 
     medicines.map(async m => {
       // Buscar o remédio

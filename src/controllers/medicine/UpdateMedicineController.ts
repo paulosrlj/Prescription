@@ -3,10 +3,13 @@ import { Request, Response } from 'express';
 import UpdateMedicineService from '../../services/medicine/UpdateMedicineService';
 
 import IMedicineRequest from '../../dto/IMedicineRequest';
+import SQLiteMedicineRepository from '../../repositories/implementations/SQLiteMedicineRepository';
 
 class MedicineController {
   async handle(req: Request, res: Response) {
-    const updateMedicineService = new UpdateMedicineService();
+    const updateMedicineService = new UpdateMedicineService(
+      new SQLiteMedicineRepository(),
+    );
 
     const {
       idRegister,

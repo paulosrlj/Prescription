@@ -2,9 +2,13 @@ import { DeleteResult, EntityRepository, Repository } from 'typeorm';
 import Medicine from '../../entities/Medicine';
 
 import IMedicine from '../../dto/IMedicineRequest';
+import { IMedicineRepository } from '../IMedicineRepository';
 
 @EntityRepository(Medicine)
-class MedicineRepository extends Repository<Medicine> {
+class SQLiteMedicineRepository
+  extends Repository<Medicine>
+  implements IMedicineRepository
+{
   async createMedicine(medicineParams: IMedicine): Promise<Medicine> {
     const medicine = this.create(medicineParams);
 
@@ -59,4 +63,4 @@ class MedicineRepository extends Repository<Medicine> {
   }
 }
 
-export default MedicineRepository;
+export default SQLiteMedicineRepository;
