@@ -4,7 +4,7 @@ import IRecipeRequest from '../../dto/IRecipeRequest';
 import { IMedicineArray } from '../../dto/IMedicineRequest';
 
 import Recipe from '../../entities/Recipe';
-import DoctorRepository from './DoctorRepository';
+import SQLiteDoctorRepository from './SQLiteDoctorRepository';
 import MedicineRepository from './MedicineRepository';
 import PatientRepository from './SQLitePatientRepository';
 import ApplicationErrors from '../../errors/ApplicationErrors';
@@ -29,7 +29,7 @@ class RecipeRepository extends Repository<Recipe> {
     card.quantidade_receitas += 1;
 
     // Buscar o médico
-    const doctorRepository = getCustomRepository(DoctorRepository);
+    const doctorRepository = getCustomRepository(SQLiteDoctorRepository);
     const doctor = await doctorRepository.findByCrm(doctor_crm || '');
     if (!doctor) throw new ApplicationErrors('Doctor does not exists', 401);
 

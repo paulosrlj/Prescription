@@ -1,11 +1,17 @@
-import { DeleteResult, getCustomRepository } from 'typeorm';
-
-import DoctorRepository from '../../repositories/implementations/DoctorRepository';
-// import Doctor from '../../entities/Doctor';
+import { DeleteResult, getCustomRepository, ObjectType } from 'typeorm';
+import { IDoctorRepository } from '../../repositories/IDoctorRepository';
 
 class DeleteDoctorService {
+  DoctorRepository: IDoctorRepository;
+
+  constructor(DoctorRepository: IDoctorRepository) {
+    this.DoctorRepository = DoctorRepository;
+  }
+
   async execute(crm: string): Promise<DeleteResult> {
-    const doctorRepository = getCustomRepository(DoctorRepository);
+    const doctorRepository = getCustomRepository(
+      this.DoctorRepository as unknown as ObjectType<IDoctorRepository>,
+    );
 
     const doctor = await doctorRepository.deleteByCrm(crm);
 

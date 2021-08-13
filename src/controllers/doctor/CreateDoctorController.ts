@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import IDoctor from '../../dto/IDoctorRequest';
+import SQLiteDoctorRepository from '../../repositories/implementations/SQLiteDoctorRepository';
 import CreateDoctorService from '../../services/doctor/CreateDoctorService';
 
 class CreateDoctorController {
@@ -8,7 +9,9 @@ class CreateDoctorController {
     const { name, email, password, birth_date, phone, crm } =
       req.body as unknown as IDoctor;
 
-    const createDoctorService = new CreateDoctorService();
+    const createDoctorService = new CreateDoctorService(
+      new SQLiteDoctorRepository(),
+    );
 
     const doctor = await createDoctorService.execute({
       name,

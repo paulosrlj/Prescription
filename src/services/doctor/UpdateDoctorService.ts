@@ -1,13 +1,21 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, ObjectType } from 'typeorm';
 
 import IDoctor from '../../dto/IDoctorRequest';
-import DoctorRepository from '../../repositories/implementations/DoctorRepository';
 import { doctorUpdateValidation } from '../../utils/doctorValidation';
 import ApplicationErrors from '../../errors/ApplicationErrors';
+import { IDoctorRepository } from '../../repositories/IDoctorRepository';
 
 class UpdateDoctorService {
+  DoctorRepository: IDoctorRepository;
+
+  constructor(DoctorRepository: IDoctorRepository) {
+    this.DoctorRepository = DoctorRepository;
+  }
+
   async execute(doctorParams: IDoctor): Promise<void> {
-    const doctorRepository = getCustomRepository(DoctorRepository);
+    const doctorRepository = getCustomRepository(
+      this.DoctorRepository as unknown as ObjectType<IDoctorRepository>,
+    );
 
     await doctorUpdateValidation(doctorParams);
 
