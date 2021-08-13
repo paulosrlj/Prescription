@@ -1,16 +1,24 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, ObjectType } from 'typeorm';
 
-import RecipeRepository from '../../repositories/implementations/RecipeRepository';
 import IRecipeRequest from '../../dto/IRecipeRequest';
 import Recipe from '../../entities/Recipe';
 import { IMedicineArray } from '../../dto/IMedicineRequest';
 import { recipeCreateValidation } from '../../utils/recipeValidation';
+import { IRecipeRepository } from '../../repositories/IRecipeRepository';
 
 class CreateRecipeService {
+  RecipeRepository: IRecipeRepository;
+
+  constructor(RecipeRepository: IRecipeRepository) {
+    this.RecipeRepository = RecipeRepository;
+  }
+
   async execute(
     recipeParams: IRecipeRequest & IMedicineArray,
   ): Promise<Recipe> {
-    const recipeRepository = getCustomRepository(RecipeRepository);
+    const recipeRepository = getCustomRepository(
+      this.RecipeRepository as unknown as ObjectType<IRecipeRepository>,
+    );
 
     await recipeCreateValidation(recipeParams);
 

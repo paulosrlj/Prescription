@@ -1,11 +1,14 @@
 import { Request, Response } from 'express';
+import SQLiteRecipeRepository from '../../repositories/implementations/SQLiteRecipeRepository';
 
 import ListAllRecipeService from '../../services/recipe/ListAllRecipeService';
 import { doctorView } from '../views/recipes.view';
 
 class ListAllRecipeController {
   async handle(req: Request, res: Response) {
-    const createRecipeService = new ListAllRecipeService();
+    const createRecipeService = new ListAllRecipeService(
+      new SQLiteRecipeRepository(),
+    );
 
     const recipes = await createRecipeService.execute();
 

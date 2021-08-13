@@ -9,9 +9,13 @@ import SQLiteMedicineRepository from './SQLiteMedicineRepository';
 import PatientRepository from './SQLitePatientRepository';
 import ApplicationErrors from '../../errors/ApplicationErrors';
 import CardRepository from './CardRepository';
+import { IRecipeRepository } from '../IRecipeRepository';
 
 @EntityRepository(Recipe)
-class RecipeRepository extends Repository<Recipe> {
+class SQLiteRecipeRepository
+  extends Repository<Recipe>
+  implements IRecipeRepository
+{
   async createRecipe({
     validade,
     cpf_patient,
@@ -86,4 +90,4 @@ class RecipeRepository extends Repository<Recipe> {
   }
 }
 
-export default RecipeRepository;
+export default SQLiteRecipeRepository;

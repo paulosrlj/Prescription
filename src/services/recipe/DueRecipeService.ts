@@ -1,13 +1,21 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, ObjectType } from 'typeorm';
 
 import { recipeUpdateValidation } from '../../utils/recipeValidation';
 import ApplicationErrors from '../../errors/ApplicationErrors';
 import IRecipeRequest from '../../dto/IRecipeRequest';
-import RecipeRepository from '../../repositories/implementations/RecipeRepository';
+import { IRecipeRepository } from '../../repositories/IRecipeRepository';
 
 class DueRecipeService {
+  RecipeRepository: IRecipeRepository;
+
+  constructor(RecipeRepository: IRecipeRepository) {
+    this.RecipeRepository = RecipeRepository;
+  }
+
   async execute(recipeParams: IRecipeRequest): Promise<void> {
-    const recipeRepository = getCustomRepository(RecipeRepository);
+    const recipeRepository = getCustomRepository(
+      this.RecipeRepository as unknown as ObjectType<IRecipeRepository>,
+    );
 
     await recipeUpdateValidation(recipeParams);
 

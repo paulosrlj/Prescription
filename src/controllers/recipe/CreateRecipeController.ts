@@ -4,6 +4,7 @@ import IRecipe from '../../dto/IRecipeRequest';
 import CreateRecipeService from '../../services/recipe/CreateRecipeService';
 
 import { IMedicineArray } from '../../dto/IMedicineRequest';
+import SQLiteRecipeRepository from '../../repositories/implementations/SQLiteRecipeRepository';
 
 interface doctorType {
   doctor_crm: string;
@@ -16,7 +17,10 @@ class CreateRecipeController {
       doctorType;
     const { doctor_crm } = req;
 
-    const createRecipeService = new CreateRecipeService();
+    const createRecipeService = new CreateRecipeService(
+      new SQLiteRecipeRepository(),
+    );
+
     const recipe = await createRecipeService.execute({
       cpf_patient,
       validade,
