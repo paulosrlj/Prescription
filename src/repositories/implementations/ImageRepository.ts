@@ -15,14 +15,14 @@ class ImageRepository extends Repository<Image> {
 
   async findAll(): Promise<Image[]> {
     return this.find({
-      select: ['id', 'name'],
+      select: ['id', 'name', 'path'],
       relations: ['recipe'],
     });
   }
 
   async findById(id: string): Promise<Image | undefined> {
     return this.findOne(id, {
-      select: ['id', 'name'],
+      select: ['id', 'name', 'path'],
       relations: ['recipe'],
     });
   }

@@ -5,6 +5,5 @@ export interface IImagesPath {
 export default interface IImageRequest {
   id: string;
   name?: string;
-  path?: IImagesPath[];
-  imagesPath?: IImagesPath[];
+  path?: string;
 }

@@ -11,13 +11,11 @@ import ApplicationErrors from '../../errors/ApplicationErrors';
 
 @EntityRepository(Recipe)
 class RecipeRepository extends Repository<Recipe> {
-  async createRecipe({
-    validade,
-    cpf_patient,
-    doctor_crm,
-    medicines,
-    due,
-  }: IRecipeRequest & IMedicineArray): Promise<Recipe> {
+  async createRecipe(
+    recipeParams: IRecipeRequest & IMedicineArray,
+  ): Promise<Recipe> {
+    const { cpf_patient, doctor_crm, medicines } = recipeParams;
+
     // Buscar o paciente e cartão do paciente
     const patientRepository = getCustomRepository(PatientRepository);
     const patient = await patientRepository.findByCpf(cpf_patient);
@@ -31,7 +29,7 @@ class RecipeRepository extends Repository<Recipe> {
     if (!doctor) throw new ApplicationErrors('Doctor does not exists', 401);
 
     // Criar a receita
-    const recipe = this.create({ card, validade, doctor, medicines: [], due });
+    const recipe = this.create(recipeParams);
 
     // Buscar e adicionar os remédios
     const medicineRepository = getCustomRepository(MedicineRepository);
