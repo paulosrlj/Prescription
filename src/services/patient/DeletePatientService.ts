@@ -1,7 +1,7 @@
 import { getCustomRepository } from 'typeorm';
 import ApplicationErrors from '../../errors/ApplicationErrors';
 
-import PatientRepository from '../../repositories/implementations/PatientRepository';
+import PatientRepository from '../../repositories/implementations/SQLitePatientRepository';
 
 class DeletePatientService {
   async execute(cpf: string): Promise<void> {

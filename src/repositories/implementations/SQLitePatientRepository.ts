@@ -8,9 +8,13 @@ import Patient from '../../entities/Patient';
 
 import IPatient from '../../dto/IPatientRequest';
 import CardRepository from './CardRepository';
+import { IPatientRepository } from '../IPatientRepository';
 
 @EntityRepository(Patient)
-class PatientRepository extends Repository<Patient> {
+class SQLitePatientRepository
+  extends Repository<Patient>
+  implements IPatientRepository
+{
   async createPatient({
     cpf,
     name,
@@ -46,15 +50,7 @@ class PatientRepository extends Repository<Patient> {
   }
 
   async findByCpf(cpf: string): Promise<Patient | undefined> {
-    const patient = await this.findOne(
-      {
-        cpf,
-      },
-      {
-        select: ['id', 'cpf', 'email', 'name', 'phone', 'birth_date'],
-        relations: ['card'],
-      },
-    );
+    const patient = await this.findOne({ cpf }, { relations: ['card'] });
     return patient;
   }
 
@@ -81,4 +77,4 @@ class PatientRepository extends Repository<Patient> {
   }
 }
 
-export default PatientRepository;
+export default SQLitePatientRepository;

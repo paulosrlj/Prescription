@@ -6,7 +6,7 @@ import { IMedicineArray } from '../../dto/IMedicineRequest';
 import Recipe from '../../entities/Recipe';
 import DoctorRepository from './DoctorRepository';
 import MedicineRepository from './MedicineRepository';
-import PatientRepository from './PatientRepository';
+import PatientRepository from './SQLitePatientRepository';
 import ApplicationErrors from '../../errors/ApplicationErrors';
 
 @EntityRepository(Recipe)

@@ -1,6 +1,6 @@
 import { getCustomRepository } from 'typeorm';
 
-import PatientRepository from '../../repositories/implementations/PatientRepository';
+import PatientRepository from '../../repositories/implementations/SQLitePatientRepository';
 import Patient from '../../entities/Patient';
 import IPatientRequest from '../../dto/IPatientRequest';
 

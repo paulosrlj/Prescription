@@ -1,6 +1,6 @@
 import { getCustomRepository } from 'typeorm';
 
-import PatientRepository from '../../repositories/implementations/PatientRepository';
+import PatientRepository from '../../repositories/implementations/SQLitePatientRepository';
 import IPatientRequest from '../../dto/IPatientRequest';
 import { patientUpdateValidation } from '../../utils/patientValidation';
 import ApplicationErrors from '../../errors/ApplicationErrors';
