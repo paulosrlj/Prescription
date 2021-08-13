@@ -17,7 +17,6 @@ class CreateRecipeController {
     const { doctor_crm } = req;
 
     const createRecipeService = new CreateRecipeService();
-
     const recipe = await createRecipeService.execute({
       cpf_patient,
       validade,

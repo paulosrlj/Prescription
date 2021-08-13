@@ -8,6 +8,7 @@ import DoctorRepository from './DoctorRepository';
 import MedicineRepository from './MedicineRepository';
 import PatientRepository from './SQLitePatientRepository';
 import ApplicationErrors from '../../errors/ApplicationErrors';
+import CardRepository from './CardRepository';
 
 @EntityRepository(Recipe)
 class RecipeRepository extends Repository<Recipe> {
@@ -20,11 +21,13 @@ class RecipeRepository extends Repository<Recipe> {
   }: IRecipeRequest & IMedicineArray): Promise<Recipe> {
     // Buscar o paciente e cartão do paciente
     const patientRepository = getCustomRepository(PatientRepository);
+    const cardRepository = getCustomRepository(CardRepository);
     const patient = await patientRepository.findByCpf(cpf_patient);
 
     if (!patient) throw new ApplicationErrors('Patient does not exists', 401);
     const { card } = patient;
     card.quantidade_receitas += 1;
+
     // Buscar o médico
     const doctorRepository = getCustomRepository(DoctorRepository);
     const doctor = await doctorRepository.findByCrm(doctor_crm || '');
@@ -47,7 +50,7 @@ class RecipeRepository extends Repository<Recipe> {
     });
 
     await this.save(recipe);
-
+    await cardRepository.save(card);
     return recipe;
   }
 
