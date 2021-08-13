@@ -2,7 +2,7 @@ import { getCustomRepository } from 'typeorm';
 import Recipe from '../../entities/Recipe';
 import ApplicationErrors from '../../errors/ApplicationErrors';
 
-import RecipeRepository from '../../repositories/implementations/RecipeRepository';
+import RecipeRepository from '../../repositories/implementations/SQLiteRecipeRepository';
 
 class ListAllRecipeService {
   async execute(id: string): Promise<Recipe> {

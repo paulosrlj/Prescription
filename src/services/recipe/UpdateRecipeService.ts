@@ -3,7 +3,7 @@ import { getCustomRepository, SimpleConsoleLogger } from 'typeorm';
 import { recipeUpdateValidation } from '../../utils/recipeValidation';
 import ApplicationErrors from '../../errors/ApplicationErrors';
 import IRecipeRequest from '../../dto/IRecipeRequest';
-import RecipeRepository from '../../repositories/implementations/RecipeRepository';
+import RecipeRepository from '../../repositories/implementations/SQLiteRecipeRepository';
 import MedicineRepository from '../../repositories/implementations/MedicineRepository';
 import { IMedicineArray } from '../../dto/IMedicineRequest';
 

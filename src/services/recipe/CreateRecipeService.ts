@@ -1,6 +1,6 @@
 import { getCustomRepository } from 'typeorm';
 
-import RecipeRepository from '../../repositories/implementations/RecipeRepository';
+import RecipeRepository from '../../repositories/implementations/SQLiteRecipeRepository';
 import IRecipeRequest from '../../dto/IRecipeRequest';
 import Recipe from '../../entities/Recipe';
 import { IMedicineArray } from '../../dto/IMedicineRequest';
