@@ -7,7 +7,7 @@ import {
 import Patient from '../../entities/Patient';
 
 import IPatient from '../../dto/IPatientRequest';
-import CardRepository from './CardRepository';
+import SQLiteCardRepository from './SQLiteCardRepository';
 import { IPatientRepository } from '../IPatientRepository';
 
 @EntityRepository(Patient)
@@ -32,7 +32,7 @@ class SQLitePatientRepository
       birth_date,
     });
 
-    const cardRepository = getCustomRepository(CardRepository);
+    const cardRepository = getCustomRepository(SQLiteCardRepository);
     const card = await cardRepository.createCard();
 
     patient.card = card;
@@ -73,6 +73,14 @@ class SQLitePatientRepository
   }
 
   async deleteByCpf(cpf: string): Promise<DeleteResult> {
+    const {
+      card: { id },
+    } = await this.findByCpf(cpf);
+    const cardRepository = getCustomRepository(SQLiteCardRepository);
+    const card = await cardRepository.findById(id);
+
+    await cardRepository.deleteById(card.id);
+
     return this.delete({ cpf });
   }
 }

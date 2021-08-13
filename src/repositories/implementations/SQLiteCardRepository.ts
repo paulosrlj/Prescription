@@ -1,9 +1,10 @@
 import { EntityRepository, Repository } from 'typeorm';
 
 import Card from '../../entities/Card';
+import { ICardRepository } from '../ICardRepository';
 
 @EntityRepository(Card)
-class CardRepository extends Repository<Card> {
+class CardRepository extends Repository<Card> implements ICardRepository {
   async createCard(): Promise<Card> {
     const card = this.create();
     await this.save(card);
@@ -19,8 +20,12 @@ class CardRepository extends Repository<Card> {
   }
 
   async findById(id: string): Promise<Card | undefined> {
-    const card = await this.findOne({ id }, { relations: ['patient'] });
+    const card = await this.findOne({ id });
     return card;
+  }
+
+  async deleteById(id: string): Promise<void> {
+    await this.delete({ id });
   }
 }
 
