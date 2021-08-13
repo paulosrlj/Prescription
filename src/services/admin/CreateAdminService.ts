@@ -1,14 +1,22 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, ObjectType } from 'typeorm';
 
 import IAdminRequest from '../../dto/IAdminRequest';
 import { AdminCreateValidation } from '../../utils/AdminValidation';
 import ApplicationErrors from '../../errors/ApplicationErrors';
-import AdminRepository from '../../repositories/implementations/AdminRepository';
 import Admin from '../../entities/Admin';
+import { IAdminRepository } from '../../repositories/IAdminRepository';
 
 class CreateAdminService {
+  AdminRepository: IAdminRepository;
+
+  constructor(AdminRepository: IAdminRepository) {
+    this.AdminRepository = AdminRepository;
+  }
+
   async execute(adminParams: IAdminRequest): Promise<Admin | null> {
-    const adminRepository = getCustomRepository(AdminRepository);
+    const adminRepository = getCustomRepository(
+      this.AdminRepository as unknown as ObjectType<IAdminRepository>,
+    );
 
     // Validar os campos
     await AdminCreateValidation(adminParams);
