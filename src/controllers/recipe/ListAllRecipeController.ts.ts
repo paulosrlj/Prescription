@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import ListAllRecipeService from '../../services/recipe/ListAllRecipeService';
+import { doctorView } from '../views/recipes.view';
 
 class ListAllRecipeController {
   async handle(req: Request, res: Response) {
@@ -9,18 +10,14 @@ class ListAllRecipeController {
     const recipes = await createRecipeService.execute();
 
     const recipesFiltered = recipes.map(recipe => {
+      const { id, validade, due, medicines, card } = recipe;
       return {
-        id: recipe.id,
-        validade: recipe.validade,
-        due: recipe.due,
-        medicines: recipe.medicines,
-        doctor: {
-          id: recipe.doctor.id,
-          name: recipe.doctor.name,
-          crm: recipe.doctor.crm,
-          email: recipe.doctor.email,
-          phone: recipe.doctor.phone,
-        },
+        id,
+        validade,
+        due,
+        medicines,
+        card,
+        doctor: doctorView(recipe.doctor),
       };
     });
 
