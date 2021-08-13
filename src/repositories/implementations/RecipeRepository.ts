@@ -1,9 +1,4 @@
-import {
-  EntityRepository,
-  getCustomRepository,
-  ObjectType,
-  Repository,
-} from 'typeorm';
+import { EntityRepository, getCustomRepository, Repository } from 'typeorm';
 
 import IRecipeRequest from '../../dto/IRecipeRequest';
 import { IMedicineArray } from '../../dto/IMedicineRequest';
@@ -11,18 +6,11 @@ import { IMedicineArray } from '../../dto/IMedicineRequest';
 import Recipe from '../../entities/Recipe';
 import DoctorRepository from './DoctorRepository';
 import MedicineRepository from './MedicineRepository';
-import { IPatientRepository } from '../IPatientRepository';
+import PatientRepository from './SQLitePatientRepository';
 import ApplicationErrors from '../../errors/ApplicationErrors';
 
 @EntityRepository(Recipe)
 class RecipeRepository extends Repository<Recipe> {
-  PatientRepository: IPatientRepository;
-
-  constructor(PatientRepository: IPatientRepository) {
-    super();
-    this.PatientRepository = PatientRepository;
-  }
-
   async createRecipe({
     validade,
     cpf_patient,
@@ -31,14 +19,12 @@ class RecipeRepository extends Repository<Recipe> {
     due,
   }: IRecipeRequest & IMedicineArray): Promise<Recipe> {
     // Buscar o paciente e cartão do paciente
-    const patientRepository = getCustomRepository(
-      this.PatientRepository as unknown as ObjectType<IPatientRepository>,
-    );
+    const patientRepository = getCustomRepository(PatientRepository);
     const patient = await patientRepository.findByCpf(cpf_patient);
 
     if (!patient) throw new ApplicationErrors('Patient does not exists', 401);
     const { card } = patient;
-
+    card.quantidade_receitas += 1;
     // Buscar o médico
     const doctorRepository = getCustomRepository(DoctorRepository);
     const doctor = await doctorRepository.findByCrm(doctor_crm || '');
