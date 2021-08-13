@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
@@ -43,7 +44,11 @@ export default class Doctor {
   @Column({ nullable: false, type: 'date' })
   birth_date: Date;
 
-  @OneToMany(type => Recipe, doctor => Doctor)
+  @OneToMany(() => Recipe, recipes => recipes.doctor, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'recipe_id', referencedColumnName: 'id' })
   recipes: Recipe[];
 
   @CreateDateColumn()

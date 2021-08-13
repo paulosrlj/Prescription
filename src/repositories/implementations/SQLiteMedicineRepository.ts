@@ -2,23 +2,15 @@ import { DeleteResult, EntityRepository, Repository } from 'typeorm';
 import Medicine from '../../entities/Medicine';
 
 import IMedicine from '../../dto/IMedicineRequest';
+import { IMedicineRepository } from '../IMedicineRepository';
 
 @EntityRepository(Medicine)
-class MedicineRepository extends Repository<Medicine> {
-  async createMedicine({
-    idRegister,
-    nome,
-    categoria,
-    classe_terapeutica,
-    empresa_detentora,
-  }: IMedicine): Promise<Medicine> {
-    const medicine = this.create({
-      idRegister,
-      nome,
-      categoria,
-      classe_terapeutica,
-      empresa_detentora,
-    });
+class SQLiteMedicineRepository
+  extends Repository<Medicine>
+  implements IMedicineRepository
+{
+  async createMedicine(medicineParams: IMedicine): Promise<Medicine> {
+    const medicine = this.create(medicineParams);
 
     await this.save(medicine);
 
@@ -34,6 +26,7 @@ class MedicineRepository extends Repository<Medicine> {
         'categoria',
         'classe_terapeutica',
         'empresa_detentora',
+        'dosagem',
       ],
     });
   }
@@ -52,6 +45,22 @@ class MedicineRepository extends Repository<Medicine> {
     const medicine = await this.delete({ idRegister });
     return medicine;
   }
+
+  async updateByIdRegister(medicineParams: IMedicine): Promise<void> {
+    const attributes = { ...medicineParams };
+
+    Object.keys(attributes).map(
+      key => attributes[key] === undefined && delete attributes[key],
+    );
+
+    const { idRegister } = attributes;
+
+    await this.update({ idRegister }, attributes);
+  }
+
+  async deleteByIdRegister(idRegister: string): Promise<DeleteResult> {
+    return this.delete({ idRegister });
+  }
 }
 
-export default MedicineRepository;
+export default SQLiteMedicineRepository;

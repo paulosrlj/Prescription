@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import DeleteAdminService from '../../services/admin/DeleteAdminPatientService';
 import IAdminRequest from '../../dto/IAdminRequest';
 import ApplicationErrors from '../../errors/ApplicationErrors';
+import SQLiteAdminRepository from '../../repositories/implementations/SQLiteAdminRepository';
 
 class DeleteAdminController {
   async handle(req: Request, res: Response) {
@@ -11,7 +12,9 @@ class DeleteAdminController {
     if (!(admin_secret === process.env.ADMIN_SECRET))
       throw new ApplicationErrors('Admin secret invalid', 401);
 
-    const deleteAdminService = new DeleteAdminService();
+    const deleteAdminService = new DeleteAdminService(
+      new SQLiteAdminRepository(),
+    );
 
     await deleteAdminService.execute(email);
 

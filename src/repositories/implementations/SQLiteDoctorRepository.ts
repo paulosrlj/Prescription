@@ -3,9 +3,13 @@ import Doctor from '../../entities/Doctor';
 
 import IDoctor from '../../dto/IDoctorRequest';
 import ApplicationErrors from '../../errors/ApplicationErrors';
+import { IDoctorRepository } from '../IDoctorRepository';
 
 @EntityRepository(Doctor)
-class DoctorRepository extends Repository<Doctor> {
+class SQLiteDoctorRepository
+  extends Repository<Doctor>
+  implements IDoctorRepository
+{
   async createDoctor({
     crm,
     name,
@@ -40,15 +44,13 @@ class DoctorRepository extends Repository<Doctor> {
 
   async findByCrm(crm: string): Promise<Doctor | undefined> {
     const doctor = await this.findOne(crm, {
-      select: ['id', 'name', 'email', 'phone', 'crm', 'password'],
+      relations: ['recipes'],
     });
     return doctor;
   }
 
   async findByEmail(email: string): Promise<Doctor | undefined> {
-    const doctor = await this.findOne(email, {
-      select: ['id', 'name', 'email', 'phone', 'crm', 'password'],
-    });
+    const doctor = await this.findOne(email);
     return doctor;
   }
 
@@ -72,4 +74,4 @@ class DoctorRepository extends Repository<Doctor> {
   }
 }
 
-export default DoctorRepository;
+export default SQLiteDoctorRepository;

@@ -1,16 +1,33 @@
-import { getCustomRepository, SimpleConsoleLogger } from 'typeorm';
+import { getCustomRepository, ObjectType } from 'typeorm';
 
 import { recipeUpdateValidation } from '../../utils/recipeValidation';
 import ApplicationErrors from '../../errors/ApplicationErrors';
 import IRecipeRequest from '../../dto/IRecipeRequest';
-import RecipeRepository from '../../repositories/implementations/SQLiteRecipeRepository';
-import MedicineRepository from '../../repositories/implementations/MedicineRepository';
+
 import { IMedicineArray } from '../../dto/IMedicineRequest';
+import { IRecipeRepository } from '../../repositories/IRecipeRepository';
+import { IMedicineRepository } from '../../repositories/IMedicineRepository';
 
 class UpdateRecipeService {
+  RecipeRepository: IRecipeRepository;
+
+  MedicineRepository: IMedicineRepository;
+
+  constructor(
+    RecipeRepository: IRecipeRepository,
+    MedicineRepository: IMedicineRepository,
+  ) {
+    this.RecipeRepository = RecipeRepository;
+    this.MedicineRepository = MedicineRepository;
+  }
+
   async execute(recipeParams: IRecipeRequest & IMedicineArray): Promise<void> {
-    const recipeRepository = getCustomRepository(RecipeRepository);
-    const medicineRepository = getCustomRepository(MedicineRepository);
+    const recipeRepository = getCustomRepository(
+      this.RecipeRepository as unknown as ObjectType<IRecipeRepository>,
+    );
+    const medicineRepository = getCustomRepository(
+      this.MedicineRepository as unknown as ObjectType<IMedicineRepository>,
+    );
 
     await recipeUpdateValidation(recipeParams);
 

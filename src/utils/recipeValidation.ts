@@ -8,10 +8,7 @@ export async function recipeCreateValidation(
 ): Promise<void> {
   const schema = Yup.object().shape({
     cpf_patient: Yup.string().required(),
-    validade: Yup.date()
-      .required()
-      .min(new Date().toLocaleDateString())
-      .max(new Date('2099-12-31')),
+    validade: Yup.date().required().min(new Date()).max(new Date('2099-12-31')),
     medicines_array: Yup.array().of(
       Yup.object().shape({
         dosagem: Yup.string().required(),
@@ -38,9 +35,7 @@ export async function recipeUpdateValidation(
   objectRecipe: IRecipeRequest,
 ): Promise<void> {
   const schema = Yup.object().shape({
-    validade: Yup.date()
-      .min(new Date().toLocaleDateString())
-      .max(new Date('2099-12-31')),
+    validade: Yup.date().min(new Date()).max(new Date('2099-12-31')),
     medicines_array: Yup.array().of(
       Yup.object().shape({
         dosagem: Yup.string(),

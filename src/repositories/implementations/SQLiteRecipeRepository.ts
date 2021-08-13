@@ -4,35 +4,42 @@ import IRecipeRequest from '../../dto/IRecipeRequest';
 import { IMedicineArray } from '../../dto/IMedicineRequest';
 
 import Recipe from '../../entities/Recipe';
-import DoctorRepository from './DoctorRepository';
-import MedicineRepository from './MedicineRepository';
-import PatientRepository from './PatientRepository';
+
+import SQLiteDoctorRepository from './SQLiteDoctorRepository';
+import SQLiteMedicineRepository from './SQLiteMedicineRepository';
+import PatientRepository from './SQLitePatientRepository';
 import ApplicationErrors from '../../errors/ApplicationErrors';
+import SQLiteCardRepository from './SQLiteCardRepository';
+import { IRecipeRepository } from '../IRecipeRepository';
 
 @EntityRepository(Recipe)
-class RecipeRepository extends Repository<Recipe> {
-  async createRecipe(
-    recipeParams: IRecipeRequest & IMedicineArray,
-  ): Promise<Recipe> {
-    const { cpf_patient, doctor_crm, medicines } = recipeParams;
-
+class SQLiteRecipeRepository
+  extends Repository<Recipe>
+  implements IRecipeRepository
+{
+  async createRecipe(recipeParams: IRecipeRequest & IMedicineArray): Promise<Recipe> {
     // Buscar o paciente e cartão do paciente
+    const { cpf_patient, doctor_crm, medicines } = recipeParams;
     const patientRepository = getCustomRepository(PatientRepository);
+    const cardRepository = getCustomRepository(SQLiteCardRepository);
     const patient = await patientRepository.findByCpf(cpf_patient);
 
     if (!patient) throw new ApplicationErrors('Patient does not exists', 401);
     const { card } = patient;
+    
+    card.quantidade_receitas += 1;
 
     // Buscar o médico
-    const doctorRepository = getCustomRepository(DoctorRepository);
+    const doctorRepository = getCustomRepository(SQLiteDoctorRepository);
     const doctor = await doctorRepository.findByCrm(doctor_crm || '');
     if (!doctor) throw new ApplicationErrors('Doctor does not exists', 401);
 
     // Criar a receita
-    const recipe = this.create(recipeParams);
+
+    const recipe = this.create({ card, validade, doctor, medicines: [], due });
 
     // Buscar e adicionar os remédios
-    const medicineRepository = getCustomRepository(MedicineRepository);
+    const medicineRepository = getCustomRepository(SQLiteMedicineRepository);
 
     medicines.map(async m => {
       // Buscar o remédio
@@ -45,6 +52,7 @@ class RecipeRepository extends Repository<Recipe> {
     });
 
     await this.save(recipe);
+    await cardRepository.save(card);
 
     return recipe;
   }
@@ -52,13 +60,16 @@ class RecipeRepository extends Repository<Recipe> {
   async findAll(): Promise<Recipe[]> {
     return this.find({
       select: ['id', 'validade', 'due'],
+
       relations: ['medicines', 'doctor', 'imagesPath'],
+
     });
   }
 
   async findById(id: string): Promise<Recipe> {
     return this.findOne(id, {
       select: ['id', 'validade', 'due'],
+
       relations: ['card', 'medicines', 'doctor', 'imagesPath'],
     });
   }
@@ -72,6 +83,13 @@ class RecipeRepository extends Repository<Recipe> {
 
     await this.update({ id }, recipeParams);
   }
+
+  async dueRecipe(recipeParams: IRecipeRequest): Promise<void> {
+    const recipe = await this.findById(recipeParams.id);
+    recipe.due = recipeParams.due;
+
+    await this.save(recipe);
+  }
 }
 
-export default RecipeRepository;
+export default SQLiteRecipeRepository;

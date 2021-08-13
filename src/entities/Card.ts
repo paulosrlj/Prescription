@@ -28,7 +28,11 @@ export default class Card {
   @OneToOne(() => Patient, patient => patient.cpf)
   patient: Patient;
 
-  @OneToMany(type => Recipe, card => Card)
+  @OneToMany(() => Recipe, recipes => recipes.card, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'recipe_id', referencedColumnName: 'id' })
   recipes: Recipe[];
 
   @CreateDateColumn()

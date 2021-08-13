@@ -2,9 +2,13 @@ import { DeleteResult, EntityRepository, Repository } from 'typeorm';
 import Admin from '../../entities/Admin';
 
 import IAdminRequest from '../../dto/IAdminRequest';
+import { IAdminRepository } from '../IAdminRepository';
 
 @EntityRepository(Admin)
-class AdminRepository extends Repository<Admin> {
+class SQLiteAdminRepository
+  extends Repository<Admin>
+  implements IAdminRepository
+{
   async createAdmin({ email, password }: IAdminRequest): Promise<Admin> {
     const admin = this.create({
       email,
@@ -25,4 +29,4 @@ class AdminRepository extends Repository<Admin> {
   }
 }
 
-export default AdminRepository;
+export default SQLiteAdminRepository;

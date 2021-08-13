@@ -13,7 +13,7 @@ const router = Router();
 
 // Só um admin pode listar os usuários
 router.get('/', adminAuthentication, ListAllPatientController.handle);
-router.get('/:cpf', adminAuthentication, ListPatientController.handle);
+router.get('/:cpf', verifyAuthenticationToken, ListPatientController.handle);
 
 router.post('/', CreatePatientController.handle);
 router.put('/', verifyAuthenticationToken, UpdatePatientController.handle);

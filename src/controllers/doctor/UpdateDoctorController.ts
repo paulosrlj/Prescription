@@ -1,11 +1,14 @@
 import { Request, Response } from 'express';
 import IDoctor from '../../dto/IDoctorRequest';
+import SQLiteDoctorRepository from '../../repositories/implementations/SQLiteDoctorRepository';
 
 import UpdateDoctorService from '../../services/doctor/UpdateDoctorService';
 
 class UpdateDoctorController {
   async handle(req: Request, res: Response) {
-    const updateDoctorService = new UpdateDoctorService();
+    const updateDoctorService = new UpdateDoctorService(
+      new SQLiteDoctorRepository(),
+    );
 
     const { birth_date, password, phone, email, name } = req.body as IDoctor;
     const crm = req.doctor_crm;

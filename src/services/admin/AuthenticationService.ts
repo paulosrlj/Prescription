@@ -1,14 +1,22 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, ObjectType } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
 import IAdminRequest from '../../dto/IAdminRequest';
 import ApplicationErrors from '../../errors/ApplicationErrors';
-import AdminRepository from '../../repositories/implementations/AdminRepository';
+import { IAdminRepository } from '../../repositories/IAdminRepository';
 
 class AuthenticationService {
+  AdminRepository: IAdminRepository;
+
+  constructor(AdminRepository: IAdminRepository) {
+    this.AdminRepository = AdminRepository;
+  }
+
   async execute({ email, password }: IAdminRequest): Promise<string> {
-    const adminRepository = getCustomRepository(AdminRepository);
+    const adminRepository = getCustomRepository(
+      this.AdminRepository as unknown as ObjectType<IAdminRepository>,
+    );
 
     const admin = await adminRepository.findByEmail(email);
     if (!admin) {

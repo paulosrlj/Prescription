@@ -1,26 +1,32 @@
-import { getCustomRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
-
-import DoctorRepository from '../../repositories/implementations/DoctorRepository';
-
+import { getCustomRepository, ObjectType } from 'typeorm';
 import IDoctorAuthenticationRequest from '../../dto/IDoctorAuthenticationRequest';
 import ApplicationErrors from '../../errors/ApplicationErrors';
+import { IDoctorRepository } from '../../repositories/IDoctorRepository';
 
 class AuthenticationService {
+  DoctorRepository: IDoctorRepository;
+
+  constructor(DoctorRepository: IDoctorRepository) {
+    this.DoctorRepository = DoctorRepository;
+  }
+
   async execute({
     crm,
     password,
   }: IDoctorAuthenticationRequest): Promise<string> {
-    const doctorRepository = getCustomRepository(DoctorRepository);
+    const doctorRepository = getCustomRepository(
+      this.DoctorRepository as unknown as ObjectType<IDoctorRepository>,
+    );
 
     const doctor = await doctorRepository.findByCrm(crm);
 
     if (!doctor) {
       throw new ApplicationErrors('CRM or password invalid', 400);
     }
-    const passwordCompared = await compare(password, doctor.password);
 
+    const passwordCompared = await compare(password, doctor.password);
     if (!passwordCompared) {
       throw new ApplicationErrors('CRM or password invalid', 400);
     }
