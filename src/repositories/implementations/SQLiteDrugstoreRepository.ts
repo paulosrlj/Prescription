@@ -2,9 +2,13 @@ import { EntityRepository, Repository } from 'typeorm';
 import Drugstore from '../../entities/Drugstore';
 
 import IDrugstore from '../../dto/IDrugstoreRequest';
+import { IDrugstoreRepository } from '../IDrugstoreRepository';
 
 @EntityRepository(Drugstore)
-class DrugstoreRepository extends Repository<Drugstore> {
+class SQLiteDrugstoreRepository
+  extends Repository<Drugstore>
+  implements IDrugstoreRepository
+{
   async createDrugstore({ name, lat, lng }: IDrugstore): Promise<Drugstore> {
     const drugstore = this.create({
       name,
@@ -24,4 +28,4 @@ class DrugstoreRepository extends Repository<Drugstore> {
   }
 }
 
-export default DrugstoreRepository;
+export default SQLiteDrugstoreRepository;
