@@ -24,7 +24,7 @@ class RecipeRepository extends Repository<Recipe> {
 
     if (!patient) throw new ApplicationErrors('Patient does not exists', 401);
     const { card } = patient;
-
+    card.quantidade_receitas += 1;
     // Buscar o médico
     const doctorRepository = getCustomRepository(DoctorRepository);
     const doctor = await doctorRepository.findByCrm(doctor_crm || '');

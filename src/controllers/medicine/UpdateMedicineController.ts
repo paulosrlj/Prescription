@@ -1,10 +1,13 @@
 import { Request, Response } from 'express';
 
-import IMedicine from '../../dto/IMedicineRequest';
-import CreateMedicineService from '../../services/medicine/CreateMedicineService';
+import UpdateMedicineService from '../../services/medicine/UpdateMedicineService';
+
+import IMedicineRequest from '../../dto/IMedicineRequest';
 
 class MedicineController {
   async handle(req: Request, res: Response) {
+    const updateMedicineService = new UpdateMedicineService();
+
     const {
       idRegister,
       nome,
@@ -12,11 +15,9 @@ class MedicineController {
       classe_terapeutica,
       empresa_detentora,
       dosagem,
-    } = req.body as unknown as IMedicine;
+    } = req.body as IMedicineRequest;
 
-    const createMedicineService = new CreateMedicineService();
-
-    const medicine = await createMedicineService.execute({
+    await updateMedicineService.execute({
       idRegister,
       nome,
       categoria,
@@ -25,7 +26,7 @@ class MedicineController {
       dosagem,
     });
 
-    return res.json(medicine);
+    return res.status(200).json({ message: 'Medicine updated succefully!' });
   }
 }
 

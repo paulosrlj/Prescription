@@ -1,13 +1,21 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, ObjectType } from 'typeorm';
 
-import PatientRepository from '../../repositories/implementations/SQLitePatientRepository';
 import IPatientRequest from '../../dto/IPatientRequest';
 import { patientUpdateValidation } from '../../utils/patientValidation';
 import ApplicationErrors from '../../errors/ApplicationErrors';
+import { IPatientRepository } from '../../repositories/IPatientRepository';
 
 class UpdatePatientService {
+  PatientRepository: IPatientRepository;
+
+  constructor(PatientRepository: IPatientRepository) {
+    this.PatientRepository = PatientRepository;
+  }
+
   async execute(patientParams: IPatientRequest): Promise<void> {
-    const patientRepository = getCustomRepository(PatientRepository);
+    const patientRepository = getCustomRepository(
+      this.PatientRepository as unknown as ObjectType<IPatientRepository>,
+    );
 
     await patientUpdateValidation(patientParams);
 

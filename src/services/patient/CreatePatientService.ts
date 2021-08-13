@@ -1,16 +1,23 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, ObjectType } from 'typeorm';
 
-import PatientRepository from '../../repositories/implementations/SQLitePatientRepository';
 import Patient from '../../entities/Patient';
 import IPatientRequest from '../../dto/IPatientRequest';
 
 import { patientCreateValidation } from '../../utils/patientValidation';
 import ApplicationErrors from '../../errors/ApplicationErrors';
+import { IPatientRepository } from '../../repositories/IPatientRepository';
 
 class CreatePatientService {
-  async execute(patientParams: IPatientRequest): Promise<Patient | null> {
-    const patientRepository = getCustomRepository(PatientRepository);
+  PatientRepository: IPatientRepository;
 
+  constructor(PatientRepository: IPatientRepository) {
+    this.PatientRepository = PatientRepository;
+  }
+
+  async execute(patientParams: IPatientRequest): Promise<Patient | null> {
+    const patientRepository = getCustomRepository(
+      this.PatientRepository as unknown as ObjectType<IPatientRepository>,
+    );
     // Validar os campos
 
     await patientCreateValidation(patientParams);

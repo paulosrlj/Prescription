@@ -1,11 +1,19 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, ObjectType } from 'typeorm';
 import ApplicationErrors from '../../errors/ApplicationErrors';
 
-import PatientRepository from '../../repositories/implementations/SQLitePatientRepository';
+import { IPatientRepository } from '../../repositories/IPatientRepository';
 
 class DeletePatientService {
+  PatientRepository: IPatientRepository;
+
+  constructor(PatientRepository: IPatientRepository) {
+    this.PatientRepository = PatientRepository;
+  }
+
   async execute(cpf: string): Promise<void> {
-    const patientRepository = getCustomRepository(PatientRepository);
+    const patientRepository = getCustomRepository(
+      this.PatientRepository as unknown as ObjectType<IPatientRepository>,
+    );
 
     const patient = await patientRepository.findByCpf(cpf);
     if (!patient) throw new ApplicationErrors('Patient does not exists', 401);

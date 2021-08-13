@@ -22,6 +22,7 @@ class MedicineRepository extends Repository<Medicine> {
         'categoria',
         'classe_terapeutica',
         'empresa_detentora',
+        'dosagem',
       ],
     });
   }
@@ -39,6 +40,22 @@ class MedicineRepository extends Repository<Medicine> {
   async deleteById(idRegister: string): Promise<DeleteResult> {
     const medicine = await this.delete({ idRegister });
     return medicine;
+  }
+
+  async updateByIdRegister(medicineParams: IMedicine): Promise<void> {
+    const attributes = { ...medicineParams };
+
+    Object.keys(attributes).map(
+      key => attributes[key] === undefined && delete attributes[key],
+    );
+
+    const { idRegister } = attributes;
+
+    await this.update({ idRegister }, attributes);
+  }
+
+  async deleteByIdRegister(idRegister: string): Promise<DeleteResult> {
+    return this.delete({ idRegister });
   }
 }
 
