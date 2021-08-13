@@ -1,18 +1,25 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, ObjectType } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
-import PatientRepository from '../../repositories/implementations/PatientRepository';
-
 import IPatientAuthenticationRequest from '../../dto/IPatientAuthenticationRequest';
 import ApplicationErrors from '../../errors/ApplicationErrors';
+import { IPatientRepository } from '../../repositories/IPatientRepository';
 
 class AuthenticationService {
+  PatientRepository: IPatientRepository;
+
+  constructor(PatientRepository: IPatientRepository) {
+    this.PatientRepository = PatientRepository;
+  }
+
   async execute({
     cpf,
     password,
   }: IPatientAuthenticationRequest): Promise<string> {
-    const patientRepository = getCustomRepository(PatientRepository);
+    const patientRepository = getCustomRepository(
+      this.PatientRepository as unknown as ObjectType<IPatientRepository>,
+    );
 
     const patient = await patientRepository.findByCpf(cpf);
     if (!patient) {

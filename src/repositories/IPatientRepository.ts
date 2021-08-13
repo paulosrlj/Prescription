@@ -14,6 +14,6 @@ export interface IPatientRepository {
   findAll(): Promise<Patient[]>;
   findByCpf(cpf: string): Promise<Patient | undefined>;
   findByEmail(email: string): Promise<Patient | undefined>;
-  updateByCpf(patientsCriteria: IPatient): Promise<Patient>;
+  updateByCpf(patientsCriteria: IPatient): Promise<void>;
   deleteByCpf(cpf: string): Promise<DeleteResult>;
 }
