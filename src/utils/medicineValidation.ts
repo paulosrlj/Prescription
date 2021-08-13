@@ -27,10 +27,10 @@ export async function medicineUpdateValidation(
 ): Promise<void> {
   const schema = Yup.object().shape({
     idRegister: Yup.string().required(),
-    nome: Yup.string().required(),
-    categoria: Yup.string().required(),
-    classe_terapeutica: Yup.string().required(),
-    empresa_detentora: Yup.string().required(),
+    nome: Yup.string(),
+    categoria: Yup.string(),
+    classe_terapeutica: Yup.string(),
+    empresa_detentora: Yup.string(),
     dosagem: Yup.string(),
   });
 

@@ -10,7 +10,7 @@ const router = Router();
 
 router.get('/', ListAllMedicineController.handle);
 router.post('/', adminAuthentication, CreateMedicineController.handle);
-router.put('/', UpdateMedicineController.handle);
+router.put('/', adminAuthentication, UpdateMedicineController.handle);
 router.delete(
   '/:idRegister',
   adminAuthentication,
