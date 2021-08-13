@@ -46,7 +46,15 @@ class PatientRepository extends Repository<Patient> {
   }
 
   async findByCpf(cpf: string): Promise<Patient | undefined> {
-    const patient = await this.findOne({ cpf }, { relations: ['card'] });
+    const patient = await this.findOne(
+      {
+        cpf,
+      },
+      {
+        select: ['id', 'cpf', 'email', 'name', 'phone', 'birth_date'],
+        relations: ['card'],
+      },
+    );
     return patient;
   }
 
