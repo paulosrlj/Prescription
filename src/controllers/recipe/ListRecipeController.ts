@@ -14,7 +14,7 @@ class ListRecipeController {
 
     const recipe = await createRecipeService.execute(id);
 
-    const { validade, due, medicines, card } = recipe;
+    const { validade, due, medicines, card, images } = recipe;
 
     return res.json({
       id,
@@ -23,6 +23,7 @@ class ListRecipeController {
       medicines,
       card,
       doctor: doctorView(recipe.doctor),
+      images,
     });
   }
 }

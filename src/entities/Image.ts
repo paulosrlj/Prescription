@@ -32,7 +32,7 @@ export default class Image {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @ManyToOne(() => Recipe, recipe => recipe.imagesPath, {
+  @ManyToOne(() => Recipe, recipe => recipe.images, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })

@@ -69,5 +69,5 @@ export default class Recipe {
     cascade: ['insert', 'update'],
   })
   @JoinColumn({ name: 'image_id', referencedColumnName: 'id' })
-  imagesPath: Image[];
+  images: Image[];
 }
