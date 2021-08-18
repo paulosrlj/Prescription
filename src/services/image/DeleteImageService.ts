@@ -1,11 +1,11 @@
 import { getCustomRepository } from 'typeorm';
 import ApplicationErrors from '../../errors/ApplicationErrors';
 
-import ImageRepository from '../../repositories/implementations/ImageRepository';
+import SQLImageRepository from '../../repositories/implementations/SQLiteImageRepository';
 
 class DeleteImageService {
   async execute(id: string): Promise<void> {
-    const imageRepository = getCustomRepository(ImageRepository);
+    const imageRepository = getCustomRepository(SQLImageRepository);
 
     const image = await imageRepository.findById(id);
     if (!image) throw new ApplicationErrors('Patient does not exists', 401);

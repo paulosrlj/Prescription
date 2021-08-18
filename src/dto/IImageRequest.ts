@@ -1,9 +1,6 @@
-export interface IImagesPath {
-  path: string;
-}
-
 export default interface IImageRequest {
-  id: string;
+  id?: string;
   name?: string;
+  recipe?: string;
   path?: string;
 }

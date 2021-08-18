@@ -13,7 +13,7 @@ class ListAllRecipeController {
     const recipes = await createRecipeService.execute();
 
     const recipesFiltered = recipes.map(recipe => {
-      const { id, validade, due, medicines, card } = recipe;
+      const { id, validade, due, medicines, card, images } = recipe;
       return {
         id,
         validade,
@@ -21,6 +21,7 @@ class ListAllRecipeController {
         medicines,
         card,
         doctor: doctorView(recipe.doctor),
+        images,
       };
     });
 

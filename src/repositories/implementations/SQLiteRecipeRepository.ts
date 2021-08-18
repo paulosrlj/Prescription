@@ -17,16 +17,17 @@ class SQLiteRecipeRepository
   extends Repository<Recipe>
   implements IRecipeRepository
 {
-  async createRecipe(recipeParams: IRecipeRequest & IMedicineArray): Promise<Recipe> {
+  async createRecipe(
+    recipeParams: IRecipeRequest & IMedicineArray,
+  ): Promise<Recipe> {
     // Buscar o paciente e cartão do paciente
-    const { cpf_patient, doctor_crm, medicines } = recipeParams;
+    const { cpf_patient, doctor_crm, medicines, validade, due } = recipeParams;
     const patientRepository = getCustomRepository(PatientRepository);
     const cardRepository = getCustomRepository(SQLiteCardRepository);
     const patient = await patientRepository.findByCpf(cpf_patient);
 
     if (!patient) throw new ApplicationErrors('Patient does not exists', 401);
     const { card } = patient;
-    
     card.quantidade_receitas += 1;
 
     // Buscar o médico
@@ -61,8 +62,7 @@ class SQLiteRecipeRepository
     return this.find({
       select: ['id', 'validade', 'due'],
 
-      relations: ['medicines', 'doctor', 'imagesPath'],
-
+      relations: ['medicines', 'doctor', 'images'],
     });
   }
 
@@ -70,7 +70,7 @@ class SQLiteRecipeRepository
     return this.findOne(id, {
       select: ['id', 'validade', 'due'],
 
-      relations: ['card', 'medicines', 'doctor', 'imagesPath'],
+      relations: ['card', 'medicines', 'doctor', 'images'],
     });
   }
 

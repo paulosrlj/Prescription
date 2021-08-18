@@ -1,12 +1,21 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, ObjectType } from 'typeorm';
 
 import Image from '../../entities/Image';
 import IImageRequest from '../../dto/IImageRequest';
-import ImageRepository from '../../repositories/implementations/ImageRepository';
+import SQLImageRepository from '../../repositories/implementations/SQLiteImageRepository';
+import { IImageRepository } from '../../repositories/IImageRepository';
 
 class CreateImageService {
+  ImageRepository: IImageRepository;
+
+  constructor(ImageRepository: IImageRepository) {
+    this.ImageRepository = ImageRepository;
+  }
+
   async execute(imageParams: IImageRequest): Promise<Image> {
-    const imageRepository = getCustomRepository(ImageRepository);
+    const imageRepository = getCustomRepository(
+      this.ImageRepository as unknown as ObjectType<IImageRepository>,
+    );
 
     const image = await imageRepository.createImage(imageParams);
 

@@ -1,11 +1,11 @@
 import { getCustomRepository } from 'typeorm';
 
 import Image from '../../entities/Image';
-import ImageRepository from '../../repositories/implementations/ImageRepository';
+import SQLImageRepository from '../../repositories/implementations/SQLiteImageRepository';
 
 class ListAllImagesService {
   async execute(): Promise<Image[]> {
-    const imageRepository = getCustomRepository(ImageRepository);
+    const imageRepository = getCustomRepository(SQLImageRepository);
 
     const images = await imageRepository.findAll();
 
