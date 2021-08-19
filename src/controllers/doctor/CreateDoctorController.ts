@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import IDoctor from '../../dto/IDoctorRequest';
 import SQLiteDoctorRepository from '../../repositories/implementations/SQLiteDoctorRepository';
 import CreateDoctorService from '../../services/doctor/CreateDoctorService';
+import { handleDoctor } from '../../views/doctorsViews';
 
 class CreateDoctorController {
   async handle(req: Request, res: Response) {
@@ -22,9 +23,9 @@ class CreateDoctorController {
       crm,
     });
 
-    if (!doctor) return res.status(401).json(null);
+    const doctorFiltered = handleDoctor(doctor);
 
-    return res.status(200).json(doctor);
+    return res.status(200).json(doctorFiltered);
   }
 }
 
