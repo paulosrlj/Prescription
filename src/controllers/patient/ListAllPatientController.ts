@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import ListAllPatientService from '../../services/patient/ListAllPatientService';
 import SQLitePatientRepository from '../../repositories/implementations/SQLitePatientRepository';
+import { handlePatient } from '../../views/patientsViews';
 
 class ListAllPatientController {
   async handle(req: Request, res: Response) {
@@ -11,7 +12,9 @@ class ListAllPatientController {
 
     const patients = await listPatientService.execute();
 
-    return res.json(patients);
+    const patientsFiltered = patients.map(p => handlePatient(p));
+
+    return res.json(patientsFiltered);
   }
 }
 

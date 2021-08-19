@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import ListPatientService from '../../services/patient/ListPatientService';
 import SQLitePatientRepository from '../../repositories/implementations/SQLitePatientRepository';
+import { handlePatient } from '../../views/patientsViews';
 
 class ListAllPatientController {
   async handle(req: Request, res: Response) {
@@ -12,7 +13,9 @@ class ListAllPatientController {
 
     const patient = await listPatientService.execute(cpf);
 
-    return res.json(patient);
+    const patientFilteder = handlePatient(patient);
+
+    return res.json(patientFilteder);
   }
 }
 
