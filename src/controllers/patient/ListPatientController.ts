@@ -13,9 +13,9 @@ class ListAllPatientController {
 
     const patient = await listPatientService.execute(cpf);
 
-    const patientFilteder = handlePatient(patient);
+    const patientFiltered = handlePatient(patient);
 
-    return res.json(patientFilteder);
+    return res.json(patientFiltered);
   }
 }
 

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import SQLiteDoctorRepository from '../../repositories/implementations/SQLiteDoctorRepository';
 
 import ListDoctorService from '../../services/doctor/ListDoctorService';
+import { handleDoctor } from '../../views/doctorsViews';
 
 class ListDoctorController {
   async handle(req: Request, res: Response) {
@@ -12,7 +13,9 @@ class ListDoctorController {
 
     const doctor = await listDoctorService.execute(crm);
 
-    return res.json(doctor);
+    const doctorFiltered = handleDoctor(doctor);
+
+    return res.json(doctorFiltered);
   }
 }
 
