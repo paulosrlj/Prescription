@@ -13,5 +13,6 @@ export function handleImage(image: Image): ImageResponse {
 }
 
 export function handleManyImages(images: Image[]): ImageResponse[] {
-  return images.map(image => this.handleImage(image));
+  const arr = images.map(image => this.handleImage(image));
+  return arr;
 }

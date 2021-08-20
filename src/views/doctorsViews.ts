@@ -1,5 +1,5 @@
 import Doctor from '../entities/Doctor';
-import Recipe from '../entities/Recipe';
+import { handleDoctorRecipe, RecipeResponse } from './recipesViews';
 
 export interface DoctorResponse {
   id: string;
@@ -8,10 +8,12 @@ export interface DoctorResponse {
   email: string;
   birth_date: Date;
   phone: string;
-  recipes: Recipe[];
+  recipes: RecipeResponse[];
 }
 
 export function handleDoctor(doctor: Doctor): DoctorResponse {
+  const recipesFiltered = doctor.recipes.map(r => handleDoctorRecipe(r));
+
   return {
     id: doctor.id,
     crm: doctor.crm,
@@ -19,6 +21,6 @@ export function handleDoctor(doctor: Doctor): DoctorResponse {
     email: doctor.email,
     birth_date: doctor.birth_date,
     phone: doctor.phone,
-    recipes: doctor.recipes,
+    recipes: recipesFiltered,
   };
 }

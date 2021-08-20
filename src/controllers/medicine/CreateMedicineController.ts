@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import IMedicine from '../../dto/IMedicineRequest';
 import CreateMedicineService from '../../services/medicine/CreateMedicineService';
 import SQLiteMedicineRepository from '../../repositories/implementations/SQLiteMedicineRepository';
+import { handleMedicine } from '../../views/medicinesViews';
 
 class MedicineController {
   async handle(req: Request, res: Response) {
@@ -28,7 +29,9 @@ class MedicineController {
       dosagem,
     });
 
-    return res.json(medicine);
+    const medicineFiltered = handleMedicine(medicine);
+
+    return res.json(medicineFiltered);
   }
 }
 

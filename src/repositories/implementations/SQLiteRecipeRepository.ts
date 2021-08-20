@@ -44,24 +44,32 @@ class SQLiteRecipeRepository
     // Buscar e adicionar os remédios
     const medicineRepository = getCustomRepository(SQLiteMedicineRepository);
 
-    medicines.map(async m => {
-      // Buscar o remédio
-      const medicine = await medicineRepository.findByIdRegister(m.idRegister);
-      if (!medicine)
-        throw new ApplicationErrors('Medicine does not exists', 401);
+    await Promise.all(
+      medicines.map(async m => {
+        // Buscar o remédio
+        const medicine = await medicineRepository.findByIdRegister(
+          m.idRegister,
+        );
+        if (!medicine)
+          throw new ApplicationErrors('Medicine does not exists', 401);
 
-      medicine.dosagem = m.dosagem;
-      recipe.medicines.push(medicine);
-    });
+        medicine.dosagem = m.dosagem;
+        recipe.medicines.push(medicine);
+      }),
+    );
 
     const imageRepository = getCustomRepository(SQLImageRepository);
     recipe.images = [];
     // adicionar imagens na receita
-    images.map(async i => {
-      const image = await imageRepository.findById(i.id);
-      if (!image) throw new ApplicationErrors('Image does not exists', 401);
-      recipe.images.push(image);
-    });
+    await Promise.all(
+      images.map(async i => {
+        const image = await imageRepository.findById(i.id);
+
+        if (!image) throw new ApplicationErrors('Image does not exists', 401);
+
+        recipe.images.push(image);
+      }),
+    );
 
     await this.save(recipe);
     await cardRepository.save(card);
@@ -71,9 +79,7 @@ class SQLiteRecipeRepository
 
   async findAll(): Promise<Recipe[]> {
     return this.find({
-      select: ['id', 'validade', 'due'],
-
-      relations: ['medicines', 'doctor', 'images'],
+      relations: ['medicines', 'doctor', 'images', 'card'],
     });
   }
 

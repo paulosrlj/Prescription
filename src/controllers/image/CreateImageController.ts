@@ -16,9 +16,13 @@ class CreateImageController {
       });
     });
 
-    Promise.all(imagesCreated).then(images => {
-      return res.status(201).json(images);
-    });
+    Promise.all(imagesCreated)
+      .then(images => {
+        return res.status(201).json(images);
+      })
+      .catch(e => {
+        return res.status(401).json(e);
+      });
   }
 }
 

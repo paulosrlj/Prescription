@@ -4,14 +4,15 @@ import { handleDoctor, DoctorResponse } from './doctorsViews';
 import { handleMedicine, MedicineResponse } from './medicinesViews';
 import { handleManyImages, ImageResponse } from './imagesViews';
 
-interface RecipeResponse {
+export interface RecipeResponse {
   id: string;
   validade: Date;
   due: boolean;
-  card: CardResponse;
-  doctor: DoctorResponse;
-  medicines: MedicineResponse[];
-  images: ImageResponse[];
+  card?: CardResponse;
+  doctor?: DoctorResponse;
+  medicines?: MedicineResponse[];
+  images?: ImageResponse[];
+  created_at?: Date;
 }
 
 export function handleRecipe(recipe: Recipe): RecipeResponse {
@@ -19,8 +20,7 @@ export function handleRecipe(recipe: Recipe): RecipeResponse {
   const medicinesFiltered = recipe.medicines.map(m => handleMedicine(m));
   const cardFiltered = handleCard(recipe.card);
   const imagesFiltered = handleManyImages(recipe.images);
-  console.log(recipe.images);
-  console.log(imagesFiltered);
+
   delete doctorFiltered.recipes;
 
   return {
@@ -31,5 +31,14 @@ export function handleRecipe(recipe: Recipe): RecipeResponse {
     doctor: doctorFiltered,
     medicines: medicinesFiltered,
     images: imagesFiltered,
+  };
+}
+
+export function handleDoctorRecipe(recipe: Recipe): RecipeResponse {
+  return {
+    id: recipe.id,
+    validade: recipe.validade,
+    due: recipe.due,
+    created_at: recipe.created_at,
   };
 }

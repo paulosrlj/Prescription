@@ -12,7 +12,7 @@ class ListDoctorController {
     );
 
     const doctor = await listDoctorService.execute(crm);
-
+    console.log('doc', doctor);
     const doctorFiltered = handleDoctor(doctor);
 
     return res.json(doctorFiltered);
