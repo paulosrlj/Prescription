@@ -15,7 +15,7 @@ const upload = multer(uploadConfig);
 router.get('/', ListAllRecipeController.handle);
 router.get('/:id', ListRecipeController.handle);
 router.post(
-  '/:id',
+  '/',
   upload.array('images'),
   verifyAuthenticationToken,
   CreateRecipeController.handle,

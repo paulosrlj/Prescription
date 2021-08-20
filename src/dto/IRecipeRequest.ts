@@ -1,4 +1,4 @@
-import { IImagesPath } from './IImageRequest';
+import Image from '../entities/Image';
 
 export default interface IRecipeRequest {
   validade?: string;
@@ -6,5 +6,5 @@ export default interface IRecipeRequest {
   doctor_crm?: string;
   due?: boolean;
   id?: string;
-  imagesPath?: IImagesPath[];
+  images?: Image[];
 }

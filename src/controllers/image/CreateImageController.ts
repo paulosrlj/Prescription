@@ -5,20 +5,20 @@ import SQLImageRepository from '../../repositories/implementations/SQLiteImageRe
 
 class CreateImageController {
   async handle(req: Request, res: Response) {
-    const { recipe } = req.body;
     const reqImages = req.files as Express.Multer.File[];
 
     const createImageService = new CreateImageService(new SQLImageRepository());
 
-    reqImages.map(async image => {
-      await createImageService.execute({
+    const imagesCreated = reqImages.map(async image => {
+      return createImageService.execute({
         name: image.originalname,
         path: image.filename,
-        recipe,
       });
     });
 
-    return res.status(201).json({ message: 'Ok' });
+    Promise.all(imagesCreated).then(images => {
+      return res.status(201).json(images);
+    });
   }
 }
 

@@ -8,19 +8,15 @@ import {
 import Image from '../../entities/Image';
 import IImageRequest from '../../dto/IImageRequest';
 import { IImageRepository } from '../IImageRepository';
-import SQLiteRecipeRepository from './SQLiteRecipeRepository';
-import ApplicationErrors from '../../errors/ApplicationErrors';
+// import SQLiteRecipeRepository from './SQLiteRecipeRepository';
+// import ApplicationErrors from '../../errors/ApplicationErrors';
 
 @EntityRepository(Image)
 class SQLImageRepository extends Repository<Image> implements IImageRepository {
   async createImage(imageParams: IImageRequest): Promise<Image> {
-    const { name, path, recipe: recipeId } = imageParams;
-    const recipeRepository = getCustomRepository(SQLiteRecipeRepository);
-    const recipe = await recipeRepository.findById(recipeId);
+    const { name, path } = imageParams;
 
-    if (!recipe) throw new ApplicationErrors('Recipe does not exists', 404);
-
-    const image = this.create({ name, path, recipe });
+    const image = this.create({ name, path });
     await this.save(image);
 
     return image;
@@ -34,10 +30,7 @@ class SQLImageRepository extends Repository<Image> implements IImageRepository {
   }
 
   async findById(id: string): Promise<Image | undefined> {
-    return this.findOne(id, {
-      select: ['id', 'name', 'path'],
-      relations: ['recipe'],
-    });
+    return this.findOne(id);
   }
 
   async deleteById(id: string): Promise<DeleteResult> {

@@ -33,6 +33,7 @@ export default class Image {
   updated_at: Date;
 
   @ManyToOne(() => Recipe, recipe => recipe.images, {
+    nullable: true,
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })

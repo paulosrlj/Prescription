@@ -5,6 +5,7 @@ import CreateRecipeService from '../../services/recipe/CreateRecipeService';
 
 import { IMedicineArray } from '../../dto/IMedicineRequest';
 import SQLiteRecipeRepository from '../../repositories/implementations/SQLiteRecipeRepository';
+import { handleRecipe } from '../../views/recipesViews';
 
 interface doctorType {
   doctor_crm: string;
@@ -12,9 +13,8 @@ interface doctorType {
 
 class CreateRecipeController {
   async handle(req: Request, res: Response) {
-    const { cpf_patient, validade, medicines, due } = req.body as IRecipe &
-      IMedicineArray &
-      doctorType;
+    const { cpf_patient, validade, medicines, due, images } =
+      req.body as IRecipe & IMedicineArray & doctorType;
     const { doctor_crm } = req;
 
     const createRecipeService = new CreateRecipeService(
@@ -27,9 +27,12 @@ class CreateRecipeController {
       doctor_crm,
       medicines,
       due,
+      images,
     });
 
-    return res.json(recipe);
+    const recipeFiltered = handleRecipe(recipe);
+
+    return res.json(recipeFiltered);
   }
 }
 

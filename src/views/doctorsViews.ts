@@ -1,7 +1,7 @@
 import Doctor from '../entities/Doctor';
 import Recipe from '../entities/Recipe';
 
-interface DoctorResponse {
+export interface DoctorResponse {
   id: string;
   crm: string;
   name: string;

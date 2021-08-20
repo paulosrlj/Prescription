@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import SQLiteRecipeRepository from '../../repositories/implementations/SQLiteRecipeRepository';
 
 import ListRecipeService from '../../services/recipe/ListRecipeService';
-import { doctorView } from '../views/recipes.view';
+// import { doctorView } from '../views/recipes.view';
 
 class ListRecipeController {
   async handle(req: Request, res: Response) {
@@ -22,7 +22,7 @@ class ListRecipeController {
       due,
       medicines,
       card,
-      doctor: doctorView(recipe.doctor),
+      // doctor: doctorView(recipe.doctor),
       images,
     });
   }

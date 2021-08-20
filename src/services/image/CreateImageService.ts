@@ -2,7 +2,6 @@ import { getCustomRepository, ObjectType } from 'typeorm';
 
 import Image from '../../entities/Image';
 import IImageRequest from '../../dto/IImageRequest';
-import SQLImageRepository from '../../repositories/implementations/SQLiteImageRepository';
 import { IImageRepository } from '../../repositories/IImageRepository';
 
 class CreateImageService {

@@ -11,6 +11,7 @@ import PatientRepository from './SQLitePatientRepository';
 import ApplicationErrors from '../../errors/ApplicationErrors';
 import SQLiteCardRepository from './SQLiteCardRepository';
 import { IRecipeRepository } from '../IRecipeRepository';
+import SQLImageRepository from './SQLiteImageRepository';
 
 @EntityRepository(Recipe)
 class SQLiteRecipeRepository
@@ -21,7 +22,8 @@ class SQLiteRecipeRepository
     recipeParams: IRecipeRequest & IMedicineArray,
   ): Promise<Recipe> {
     // Buscar o paciente e cartão do paciente
-    const { cpf_patient, doctor_crm, medicines, validade, due } = recipeParams;
+    const { cpf_patient, doctor_crm, medicines, validade, due, images } =
+      recipeParams;
     const patientRepository = getCustomRepository(PatientRepository);
     const cardRepository = getCustomRepository(SQLiteCardRepository);
     const patient = await patientRepository.findByCpf(cpf_patient);
@@ -52,6 +54,15 @@ class SQLiteRecipeRepository
       recipe.medicines.push(medicine);
     });
 
+    const imageRepository = getCustomRepository(SQLImageRepository);
+    recipe.images = [];
+    // adicionar imagens na receita
+    images.map(async i => {
+      const image = await imageRepository.findById(i.id);
+      if (!image) throw new ApplicationErrors('Image does not exists', 401);
+      recipe.images.push(image);
+    });
+
     await this.save(recipe);
     await cardRepository.save(card);
 
@@ -69,7 +80,6 @@ class SQLiteRecipeRepository
   async findById(id: string): Promise<Recipe> {
     return this.findOne(id, {
       select: ['id', 'validade', 'due'],
-
       relations: ['card', 'medicines', 'doctor', 'images'],
     });
   }
@@ -80,6 +90,7 @@ class SQLiteRecipeRepository
     const { id } = recipeParams;
     delete recipeParams.doctor_crm;
     delete recipeParams.id;
+    delete recipeParams.images;
 
     await this.update({ id }, recipeParams);
   }

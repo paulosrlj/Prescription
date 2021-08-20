@@ -19,7 +19,7 @@ export async function recipeCreateValidation(
     due: Yup.boolean().required(),
     images: Yup.array(
       Yup.object().shape({
-        path: Yup.string().required(),
+        id: Yup.string().required(),
       }),
     ),
   });
