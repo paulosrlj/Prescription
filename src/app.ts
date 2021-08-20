@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import 'express-async-errors';
 import path from 'path';
 import express, { Express } from 'express';
+import cors from 'cors';
 
 import './database';
 
@@ -28,6 +29,7 @@ class App {
   }
 
   middlewares() {
+    this.app.use(cors());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
   }
