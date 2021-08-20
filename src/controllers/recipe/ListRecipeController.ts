@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import SQLiteRecipeRepository from '../../repositories/implementations/SQLiteRecipeRepository';
 
 import ListRecipeService from '../../services/recipe/ListRecipeService';
+import { handleRecipe } from '../../views/recipesViews';
 // import { doctorView } from '../views/recipes.view';
 
 class ListRecipeController {
@@ -14,17 +15,22 @@ class ListRecipeController {
 
     const recipe = await createRecipeService.execute(id);
 
-    const { validade, due, medicines, card, images } = recipe;
+    // const { validade, due, medicines, card, images } = recipe;
 
-    return res.json({
-      id,
-      validade,
-      due,
-      medicines,
-      card,
-      // doctor: doctorView(recipe.doctor),
-      images,
-    });
+    // console.log(recipe);
+    // return res.json({
+    //   id,
+    //   validade,
+    //   due,
+    //   medicines,
+    //   card,
+    //   // doctor: doctorView(recipe.doctor),
+    //   images,
+    // });
+
+    const filteredRecipe = handleRecipe(recipe);
+
+    return res.status(201).json(filteredRecipe);
   }
 }
 

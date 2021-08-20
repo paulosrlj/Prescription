@@ -1,6 +1,6 @@
 import Image from '../entities/Image';
 
-interface ImageResponse {
+export interface ImageResponse {
   id: string;
   url: string;
 }
