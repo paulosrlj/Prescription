@@ -6,6 +6,7 @@ export interface IRecipeRepository {
   createRecipe(recipeParams: IRecipeRequest & IMedicineArray): Promise<Recipe>;
   findAll(): Promise<Recipe[]>;
   findById(id: string): Promise<Recipe | undefined>;
+  findPatientRecipes(cpf: string): Promise<Recipe[]>;
   updateById(recipeParams: IRecipeRequest & IMedicineArray): Promise<void>;
   dueRecipe(recipeParams: IRecipeRequest): Promise<void>;
 }

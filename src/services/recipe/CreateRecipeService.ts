@@ -28,7 +28,6 @@ class CreateRecipeService {
     ).toLocaleDateString();
 
     const recipe = await recipeRepository.createRecipe(recipeParams);
-
     return recipe;
   }
 }

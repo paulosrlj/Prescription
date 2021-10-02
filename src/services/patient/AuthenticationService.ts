@@ -6,6 +6,16 @@ import IPatientAuthenticationRequest from '../../dto/IPatientAuthenticationReque
 import ApplicationErrors from '../../errors/ApplicationErrors';
 import { IPatientRepository } from '../../repositories/IPatientRepository';
 
+interface ResponseType {
+  cpf: string;
+  name: string;
+  email: string;
+  birth_date: Date;
+  phone: string;
+  token: string;
+  card_id: string;
+}
+
 class AuthenticationService {
   PatientRepository: IPatientRepository;
 
@@ -16,7 +26,7 @@ class AuthenticationService {
   async execute({
     cpf,
     password,
-  }: IPatientAuthenticationRequest): Promise<string> {
+  }: IPatientAuthenticationRequest): Promise<ResponseType> {
     const patientRepository = getCustomRepository(
       this.PatientRepository as unknown as ObjectType<IPatientRepository>,
     );
@@ -43,7 +53,15 @@ class AuthenticationService {
       },
     );
 
-    return token;
+    return {
+      cpf: patient.cpf,
+      name: patient.name,
+      birth_date: patient.birth_date,
+      card_id: patient.card.id,
+      email: patient.email,
+      phone: patient.phone,
+      token,
+    };
   }
 }
 

@@ -4,6 +4,7 @@ import multer from 'multer';
 import CreateRecipeController from '../controllers/recipe/CreateRecipeController';
 import ListAllRecipeController from '../controllers/recipe/ListAllRecipeController.ts';
 import ListRecipeController from '../controllers/recipe/ListRecipeController';
+import ListPatientRecipesController from '../controllers/recipe/ListPatientRecipes';
 import DueRecipeController from '../controllers/recipe/DueRecipeController';
 
 import uploadConfig from '../config/upload';
@@ -14,6 +15,8 @@ const upload = multer(uploadConfig);
 
 router.get('/', ListAllRecipeController.handle);
 router.get('/:id', ListRecipeController.handle);
+router.get('/patient_recipes/:cpf', ListPatientRecipesController.handle);
+
 router.post(
   '/',
   upload.array('images'),

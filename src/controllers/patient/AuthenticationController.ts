@@ -12,9 +12,9 @@ class AuthenticationController {
       new SQLitePatientRepository(),
     );
 
-    const token = await authenticationService.execute({ cpf, password });
+    const user = await authenticationService.execute({ cpf, password });
 
-    return res.status(201).json(token);
+    return res.status(201).json(user);
   }
 }
 

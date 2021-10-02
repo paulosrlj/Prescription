@@ -12,7 +12,11 @@ export interface DoctorResponse {
 }
 
 export function handleDoctor(doctor: Doctor): DoctorResponse {
-  const recipesFiltered = doctor.recipes.map(r => handleDoctorRecipe(r));
+  let recipesFiltered = [];
+
+  if (doctor.recipes) {
+    recipesFiltered = doctor.recipes.map(r => handleDoctorRecipe(r));
+  }
 
   return {
     id: doctor.id,

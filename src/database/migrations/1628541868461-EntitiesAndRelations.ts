@@ -20,7 +20,7 @@ export class EntitiesAndRelations1628541868461 implements MigrationInterface {
       `CREATE TABLE "cards" ("id" varchar PRIMARY KEY NOT NULL, "quantidade_receitas" integer NOT NULL DEFAULT (0), "created_at" datetime NOT NULL DEFAULT (datetime('now')), "updated_at" datetime NOT NULL DEFAULT (datetime('now')))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "recipe_medicine" ("recipe_id" varchar NOT NULL, "medicine_idRegister" varchar NOT NULL, PRIMARY KEY ("recipe_id", "medicine_idRegister"))`,
+      `CREATE TABLE "recipe_medicine" ("recipe_id" varchar NOT NULL, "medicine_idRegister" varchar NOT NULL, "dosagem" varchar NOT NULL, PRIMARY KEY ("recipe_id", "medicine_idRegister"))`,
     );
     await queryRunner.query(
       `CREATE INDEX "IDX_195b433a9079fac355b6849503" ON "recipe_medicine" ("recipe_id") `,

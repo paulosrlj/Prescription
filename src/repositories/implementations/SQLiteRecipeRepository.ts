@@ -1,7 +1,7 @@
 import { EntityRepository, getCustomRepository, Repository } from 'typeorm';
 
 import IRecipeRequest from '../../dto/IRecipeRequest';
-import { IMedicineArray } from '../../dto/IMedicineRequest';
+import { IMedicineArray, IMedicineType } from '../../dto/IMedicineRequest';
 
 import Recipe from '../../entities/Recipe';
 
@@ -12,6 +12,22 @@ import ApplicationErrors from '../../errors/ApplicationErrors';
 import SQLiteCardRepository from './SQLiteCardRepository';
 import { IRecipeRepository } from '../IRecipeRepository';
 import SQLImageRepository from './SQLiteImageRepository';
+import Card from '../../entities/Card';
+import Doctor from '../../entities/Doctor';
+import Image from '../../entities/Image';
+
+export interface ResponseType {
+  medicines: IMedicineType[];
+  id: string;
+  illness_name: string;
+  validade: Date;
+  due: boolean;
+  card: Card;
+  doctor: Doctor;
+  created_at: Date;
+  updated_at: Date;
+  images: Image[];
+}
 
 @EntityRepository(Recipe)
 class SQLiteRecipeRepository
@@ -20,10 +36,18 @@ class SQLiteRecipeRepository
 {
   async createRecipe(
     recipeParams: IRecipeRequest & IMedicineArray,
-  ): Promise<Recipe> {
+  ): Promise<ResponseType> {
     // Buscar o paciente e cartão do paciente
-    const { cpf_patient, doctor_crm, medicines, validade, due, images } =
-      recipeParams;
+    const {
+      cpf_patient,
+      doctor_crm,
+      medicines,
+      validade,
+      due,
+      images,
+      illness_name,
+    } = recipeParams;
+
     const patientRepository = getCustomRepository(PatientRepository);
     const cardRepository = getCustomRepository(SQLiteCardRepository);
     const patient = await patientRepository.findByCpf(cpf_patient);
@@ -38,8 +62,31 @@ class SQLiteRecipeRepository
     if (!doctor) throw new ApplicationErrors('Doctor does not exists', 401);
 
     // Criar a receita
+    const recipe = this.create({
+      illness_name,
+      card,
+      validade,
+      doctor,
+      due,
+    });
 
-    const recipe = this.create({ card, validade, doctor, medicines: [], due });
+    const imageRepository = getCustomRepository(SQLImageRepository);
+    recipe.images = [];
+    // adicionar imagens na receita
+    if (images) {
+      await Promise.all(
+        images.map(async i => {
+          const image = await imageRepository.findById(i.id);
+
+          if (!image) throw new ApplicationErrors('Image does not exists', 401);
+
+          recipe.images.push(image);
+        }),
+      );
+    }
+
+    await this.save(recipe);
+    await cardRepository.save(card);
 
     // Buscar e adicionar os remédios
     const medicineRepository = getCustomRepository(SQLiteMedicineRepository);
@@ -53,41 +100,52 @@ class SQLiteRecipeRepository
         if (!medicine)
           throw new ApplicationErrors('Medicine does not exists', 401);
 
-        medicine.dosagem = m.dosagem;
-        recipe.medicines.push(medicine);
+        await this.query(
+          'INSERT INTO recipe_medicine (id, recipeId, medicineIdRegister, dosagem) VALUES (?,?,?,?)',
+          [new Date().getTime().toString(), recipe.id, m.idRegister, m.dosagem],
+        );
       }),
     );
 
-    const imageRepository = getCustomRepository(SQLImageRepository);
-    recipe.images = [];
-    // adicionar imagens na receita
-    await Promise.all(
-      images.map(async i => {
-        const image = await imageRepository.findById(i.id);
-
-        if (!image) throw new ApplicationErrors('Image does not exists', 401);
-
-        recipe.images.push(image);
-      }),
-    );
-
-    await this.save(recipe);
-    await cardRepository.save(card);
-
-    return recipe;
+    return { ...recipe, medicines: [...medicines] };
   }
 
   async findAll(): Promise<Recipe[]> {
     return this.find({
-      relations: ['medicines', 'doctor', 'images', 'card'],
+      relations: ['doctor', 'images', 'card'],
     });
   }
 
   async findById(id: string): Promise<Recipe> {
     return this.findOne(id, {
       select: ['id', 'validade', 'due'],
-      relations: ['card', 'medicines', 'doctor', 'images'],
+      relations: ['card', 'doctor', 'images'],
     });
+  }
+
+  async findPatientRecipes(cpf: string): Promise<Recipe[]> {
+    const patientRepository = getCustomRepository(PatientRepository);
+    const cardRepository = getCustomRepository(SQLiteCardRepository);
+    const patient = await patientRepository.findByCpf(cpf);
+    const card = await cardRepository.findById(patient.card.id);
+
+    if (!patient) throw new ApplicationErrors('Patient does not exists', 401);
+
+    const recipes = await this.findAll();
+
+    const newRecipes = Promise.all(
+      recipes.map(async r => {
+        const m = await this.query(
+          `SELECT M.id, M.nome, RM.dosagem FROM
+        recipe_medicine RM JOIN medicines M ON RM.medicineIdRegister = M.idRegister WHERE RM.recipeId = ? `,
+          [r.id],
+        );
+
+        return { ...r, medicines: [...m] };
+      }),
+    );
+
+    return (await newRecipes).filter(r => r.card.id === card.id);
   }
 
   async updateById(

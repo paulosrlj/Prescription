@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import SQLiteRecipeRepository from '../../repositories/implementations/SQLiteRecipeRepository';
 
 import ListAllRecipeService from '../../services/recipe/ListAllRecipeService';
-import { handleRecipe } from '../../views/recipesViews';
+import { handleRecipe, RecipeType } from '../../views/recipesViews';
 // import { doctorView } from '../views/recipes.view';
 
 class ListAllRecipeController {
@@ -11,7 +11,7 @@ class ListAllRecipeController {
       new SQLiteRecipeRepository(),
     );
 
-    const recipes = await createRecipeService.execute();
+    const recipes = (await createRecipeService.execute()) as RecipeType[];
 
     const recipesFiltered = recipes.map(r => handleRecipe(r));
 
