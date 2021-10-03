@@ -12,10 +12,7 @@ class AuthenticationService {
     this.DoctorRepository = DoctorRepository;
   }
 
-  async execute({
-    crm,
-    password,
-  }: IDoctorAuthenticationRequest): Promise<string> {
+  async execute({ crm, password }: IDoctorAuthenticationRequest) {
     const doctorRepository = getCustomRepository(
       this.DoctorRepository as unknown as ObjectType<IDoctorRepository>,
     );
@@ -42,6 +39,16 @@ class AuthenticationService {
         subject: doctor.id,
       },
     );
+
+    return {
+      id: doctor.id,
+      crm: doctor.crm,
+      name: doctor.name,
+      email: doctor.email,
+      phone: doctor.phone,
+      birth_date: doctor.birth_date,
+      token,
+    };
 
     return token;
   }
