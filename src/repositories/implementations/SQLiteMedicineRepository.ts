@@ -32,7 +32,11 @@ class SQLiteMedicineRepository
   }
 
   async findByNome(nome: string): Promise<Medicine | undefined> {
-    const medicine = await this.findOne({ nome });
+    const medicine = this.query(
+      `SELECT * FROM medicines WHERE LOWER(Nome) = ? `,
+      [nome.toLocaleLowerCase()],
+    );
+
     return medicine;
   }
 
